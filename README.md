@@ -17,7 +17,7 @@ This template is created for code generation. This template uses our own design 
 
 To get started, clone this repository and run `npm install && npm run dev`:
 
-    git clone https://github.com/ion-design/next-.git
+    git clone https://github.com/ion-design/next-prompting-demo.git
     npm install
     npm run dev
 
