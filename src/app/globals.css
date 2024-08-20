@@ -1,0 +1,245 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
+  :root {
+    --shadow-low: 0px 1px 8px 0px var(--shadow-weak);
+    --shadow-medium: 0px 4px 20px 0px var(--shadow-weak);
+    --shadow-high: 0px 1px 8px 0px var(--shadow), 0px 16px 40px 0px var(--shadow-strong);
+    --background: #ffffff;
+    --disabled: #eff1f4;
+    --overlay: rgba(38, 38, 38, 0.75);
+
+    --container: #f8f9fc;
+    --container-high: #eff1f4;
+
+    --foreground: #0b0707;
+    --secondary: #384355;
+    --subtle: #60718f;
+    --on-disabled: #b1bacb;
+
+    --stroke: #d2d7e1;
+    --stroke-strong: #b1bacb;
+    --stroke-subtle: #dee2e9;
+    --stroke-disabled: #eff1f4;
+    --stroke-inverse: #7b8ba7;
+
+    --primary-accent: #f9f9ff;
+    --primary-container: #ecf0ff;
+    --stroke-primary: #6590de;
+    --primary: #2d5da7;
+    --on-primary: #ffffff;
+    --on-primary-container: #002f66;
+    --primary-strong: #abc7ff;
+
+    --primary-hover: #07458e;
+    --on-primary-hover: #ffffff;
+
+    --primary-pressed: #003a7b;
+    --on-primary-pressed: #ffffff;
+
+    --neutral-accent: #f8f9fc;
+    --neutral-container: #eff1f4;
+    --neutral-stroke: #9ba8bd;
+    --neutral: #4c5971;
+    --on-neutral: #ffffff;
+    --on-neutral-container: #1e242e;
+
+    --neutral-hover: #140d0d;
+    --on-neutral-hover: #eff1f4;
+
+    --neutral-pressed: #000000;
+    --on-neutral-pressed: #ffffff;
+
+    --success-accent: #e8fff0;
+    --success-container: #bdffdd;
+    --stroke-success: #00a575;
+    --success: #006c4c;
+    --on-success: #ffffff;
+    --on-success-container: #003826;
+    --success-strong: #25c28d;
+
+    --success-hover: #005138;
+    --on-success-hover: #ffffff;
+
+    --success-pressed: #00452f;
+    --on-success-pressed: #ffffff;
+
+    --warning-accent: #fff9ea;
+    --warning-container: #fff2ab;
+    --stroke-warning: #a39100;
+    --warning: #6a5f00;
+    --on-warning: #ffffff;
+    --on-warning-container: #373100;
+    --warning-status: #c0ac00;
+
+    --warning-hover: #504700;
+    --on-warning-hover: #ffffff;
+
+    --warning-pressed: #443c00;
+    --on-warning-pressed: #ffffff;
+
+    --danger-accent: #fff8f7;
+    --danger-container: #ffedeb;
+    --stroke-danger: #ff5451;
+    --danger: #b91a24;
+    --on-danger: #ffffff;
+    --on-danger-container: #68000a;
+    --danger-strong: #ff5451;
+
+    --danger-hover: #930013;
+    --on-danger-hover: #ffffff;
+
+    --danger-pressed: #7d000f;
+    --on-danger-pressed: #ffffff;
+
+    --info-accent: #f9f9ff;
+    --info-container: #ecf0ff;
+    --stroke-info: #6590de;
+    --info: #2d5da7;
+    --on-info: #ffffff;
+    --on-info-container: #002f66;
+    --info-strong: #6590de;
+
+    --info-hover: #07458e;
+    --on-info-hover: #ffffff;
+
+    --info-pressed: #003a7b;
+    --on-info-pressed: #ffffff;
+
+    --shadow-weak: rgba(0, 0, 0, 0.10000000149011612);
+    --shadow: rgba(17, 17, 17, 0.10000000149011612);
+    --shadow-strong: rgba(17, 17, 17, 0.15000000596046448);
+
+    --radius-xs: 6px;
+    --radius-sm: 8px;
+    --radius: 10px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+  }
+  .dark {
+    --background: #000000;
+    --disabled: #161a21;
+    --overlay: rgba(11, 7, 7, 0.5);
+
+    --container: #1e242e;
+    --container-high: #272e3a;
+
+    --foreground: #fbfcff;
+    --secondary: #9ba8bd;
+    --subtle: #60718f;
+    --on-disabled: #384355;
+
+    --stroke: #303847;
+    --stroke-strong: #384355;
+    --stroke-subtle: #272e3a;
+    --stroke-disabled: #161a21;
+    --stroke-inverse: #384355;
+
+    --primary-accent: #00102c;
+    --primary-container: #001b3f;
+    --stroke-primary: #2d5da7;
+    --primary: #6590de;
+    --on-primary: #ffffff;
+    --on-primary-container: #abc7ff;
+    --primary-strong: #2d5da7;
+
+    --primary-hover: #6590de;
+    --on-primary-hover: #ffffff;
+
+    --primary-pressed: #4a76c2;
+    --on-primary-pressed: #ffffff;
+
+    --neutral-accent: #140e0e;
+    --neutral-container: #1e242e;
+    --neutral-stroke: #4c5971;
+    --neutral: #4c5971;
+    --on-neutral: #ffffff;
+    --on-neutral-container: #d2d7e1;
+
+    --neutral-hover: #dee2e9;
+    --on-neutral-hover: #140d0d;
+
+    --neutral-pressed: #bcc5d3;
+    --on-neutral-pressed: #000000;
+
+    --success-accent: #00150c;
+    --success-container: #002c1d;
+    --stroke-success: #006c4c;
+    --success: #00a575;
+    --on-success: #ffffff;
+    --on-success-container: #4edea7;
+    --success-strong: #005138;
+
+    --success-hover: #005138;
+    --on-success-hover: #ffffff;
+
+    --success-pressed: #00452f;
+    --on-success-pressed: #ffffff;
+
+    --warning-accent: #141100;
+    --warning-container: #2c2600;
+    --stroke-warning: #6a5f00;
+    --warning: #867800;
+    --on-warning: #ffffff;
+    --on-warning-container: #dec800;
+    --warning-status: #504700;
+
+    --warning-hover: #504700;
+    --on-warning-hover: #ffffff;
+
+    --warning-pressed: #443c00;
+    --on-warning-pressed: #ffffff;
+
+    --danger-accent: #2d0002;
+    --danger-container: #540007;
+    --stroke-danger: #b91a24;
+    --danger: #ff5451;
+    --on-danger: #ffffff;
+    --on-danger-container: #ffb3ad;
+    --danger-strong: #b91a24;
+
+    --danger-hover: #930013;
+    --on-danger-hover: #ffffff;
+
+    --danger-pressed: #7d000f;
+    --on-danger-pressed: #ffffff;
+
+    --info-accent: #00102c;
+    --info-container: #002453;
+    --stroke-info: #2d5da7;
+    --info: #6590de;
+    --on-info: #ffffff;
+    --on-info-container: #f9f9ff;
+    --info-strong: #2d5da7;
+
+    --info-hover: #07458e;
+    --on-info-hover: #ffffff;
+
+    --info-pressed: #003a7b;
+    --on-info-pressed: #ffffff;
+
+    --shadow-weak: rgba(255, 255, 255, 0.20000000298023224);
+    --shadow: rgba(238, 238, 238, 0.20000000298023224);
+    --shadow-strong: rgba(238, 238, 238, 0.25);
+  }
+}
+@layer components {
+  .primary-focus {
+    outline: none;
+    box-shadow: 0px 0px 0px 3px var(--primary-container);
+  }
+  .neutral-focus {
+    outline: none;
+    box-shadow: 0px 0px 0px 3px var(--neutral-container);
+  }
+  .danger-focus {
+    outline: none;
+    box-shadow: 0px 0px 0px 3px var(--danger-container);
+  }
+}
