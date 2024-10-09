@@ -15,7 +15,11 @@ const NavigationMenu = React.forwardRef<
   <NavigationMenuPrimitive.Root
     ref={ref}
     className={twMerge(
-      clsx("relative z-10 flex w-full [&>*:first-child]:w-full", className)
+      clsx(
+        "relative z-10 flex w-full [&>*:first-child]:w-full opacity-0 animate-fadeIn",
+        "transition-opacity duration-500 ease-in-out",
+        className
+      )
     )}
     {...props}
   >
@@ -32,7 +36,7 @@ const NavigationMenuItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <NavigationMenuPrimitive.Item
     ref={ref}
-    className={clsx("w-full", className)}
+    className={clsx("w-full transition-transform duration-300 ease-in-out", className)}
     {...props}
   />
 ));
@@ -46,7 +50,7 @@ const NavigationMenuList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <NavigationMenuPrimitive.List
     ref={ref}
-    className={clsx("flex flex-1 list-none", className)}
+    className={clsx("flex flex-1 list-none space-x-4", className)}
     {...props}
   />
 ));
@@ -73,7 +77,7 @@ export interface NavigationMenuLinkProps
 /* ---------------------------------- Component --------------------------------- */
 
 const navigationMenuLinkClassnames = cva(
-  "group flex w-full font-medium cursor-default justify-between items-center gap-3 rounded-radius-xs border-transparent px-3 py-2 text-base no-underline outline-none transition-colors",
+  "group flex w-full font-medium cursor-pointer justify-between items-center gap-3 rounded-radius-xs border-transparent px-3 py-2 text-base no-underline outline-none transition-colors transform hover:scale-105",
   {
     variants: {
       type: {
@@ -136,9 +140,9 @@ const NavigationMenuLink = React.forwardRef<
             type,
             selected,
           }),
-          !children && "w-fit"
-        ),
-        className
+          "transition-transform duration-300 ease-in-out",
+          className
+        )
       )}
       {...props}
     >
@@ -146,7 +150,7 @@ const NavigationMenuLink = React.forwardRef<
         <Slot
           className={twMerge(
             clsx(
-              "shrink-0 text-subtle",
+              "shrink-0 text-subtle transition-colors duration-300 ease-in-out",
               type === "default" && {
                 "text-subtle": !selected,
                 "text-on-primary-container": selected,
@@ -163,7 +167,7 @@ const NavigationMenuLink = React.forwardRef<
       {children && (
         <Slot
           className={clsx(
-            "shrink-0",
+            "shrink-0 transition-transform duration-300 ease-in-out",
             type === "default" && {
               "text-subtle": !selected,
               "text-on-primary-container": selected,
