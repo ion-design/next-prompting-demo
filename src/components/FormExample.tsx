@@ -8,12 +8,19 @@ import {
   LockSimpleOpen,
 } from "@phosphor-icons/react/dist/ssr";
 import { useFormik } from "formik";
-import { type MouseEvent } from "react";
+import { type MouseEvent, useState, useEffect } from "react";
 
 import Button from "@/components/ion/Button";
 import Input from "@/components/ion/Input";
 
 function FormExample() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Trigger the animation after the component mounts
+    setIsVisible(true);
+  }, []);
+
   function continueWithAppleClickHandler(e: MouseEvent<HTMLButtonElement>) {
     alert("continueWithAppleClickHandler fired");
   }
@@ -29,15 +36,28 @@ function FormExample() {
 
   const { values, errors, touched, handleChange, handleBlur } = useFormik({
     initialValues: {
-          email: "",
+      email: "",
     },
     onSubmit: () => {},
   });
 
   return (
-    <div className="bg-container h-[800px] w-[1200px] flex justify-center items-center">
-      <div className="bg-background w-1/3 flex flex-col justify-center items-center gap-5 p-5 rounded-radius-sm shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
-        <div className="w-full flex flex-col justify-center items-center gap-2.5 p-2.5">
+    <div
+      className={`bg-container h-[800px] w-[1200px] flex justify-center items-center transition-opacity duration-1000 ease-in-out ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <div
+        className={`bg-background w-1/3 flex flex-col justify-center items-center gap-5 p-5 rounded-radius-sm shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] transform transition-transform duration-700 ease-in-out ${
+          isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
+        }`}
+        style={{ transitionDelay: "200ms" }}
+      >
+        <div
+          className={`w-full flex flex-col justify-center items-center gap-2.5 p-2.5 transition-opacity duration-500 ease-in-out ${
+            isVisible ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <div className="bg-on-neutral-container flex justify-center items-center p-4 rounded-full">
             <img
               src="/images/form-example/Logo.svg"
@@ -54,7 +74,11 @@ function FormExample() {
             </div>
           </div>
         </div>
-        <form className="w-full flex flex-col justify-center items-center gap-4">
+        <form
+          className={`w-full flex flex-col justify-center items-center gap-4 transition-all duration-500 ease-in-out ${
+            isVisible ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <Input
             placeholder="hello@ion.design"
             iconLeading={<Envelope size={16} weight={"regular"} />}
@@ -66,11 +90,21 @@ function FormExample() {
             error={touched.email && errors.email}
             className="w-full"
           />
-          <Button variant="filled" color="primary" size="sm" className="w-full">
+          <Button
+            variant="filled"
+            color="primary"
+            size="sm"
+            className="w-full transition-transform duration-300 ease-in-out transform hover:scale-105 focus:scale-105"
+          >
             Sign In
           </Button>
         </form>
-        <div className="w-full flex items-center gap-3 text-xs font-semibold text-secondary">
+        <div
+          className={`w-full flex items-center gap-3 text-xs font-semibold text-secondary transition-opacity duration-500 ease-in-out ${
+            isVisible ? "opacity-100" : "opacity-0"
+          }`}
+          style={{ transitionDelay: "400ms" }}
+        >
           <img
             src="/images/form-example/Line-1.svg"
             alt="Line 1"
@@ -83,7 +117,12 @@ function FormExample() {
             className="flex-1 w-full"
           />
         </div>
-        <div className="w-full flex flex-col justify-center items-center gap-4">
+        <div
+          className={`w-full flex flex-col justify-center items-center gap-4 transition-opacity duration-500 ease-in-out ${
+            isVisible ? "opacity-100" : "opacity-0"
+          }`}
+          style={{ transitionDelay: "600ms" }}
+        >
           <Button
             iconLeading={<GoogleLogo size={16} weight={"bold"} />}
             variant="outline"
@@ -115,13 +154,19 @@ function FormExample() {
             Continue with SSO
           </Button>
         </div>
-        <div className="flex justify-center items-center gap-2">
+        <div
+          className={`flex justify-center items-center gap-2 transition-opacity duration-500 ease-in-out ${
+            isVisible ? "opacity-100" : "opacity-0"
+          }`}
+          style={{ transitionDelay: "800ms" }}
+        >
           <div className="text-sm text-secondary">Don’t have an account?</div>
           <Button
             size="sm"
             color="primary"
             onClick={signUpNowClickHandler}
             variant="link"
+            className="transition-colors duration-300 ease-in-out hover:text-primary-hover"
           >
             Sign up now
           </Button>
