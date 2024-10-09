@@ -17,7 +17,7 @@ const AvatarFallback = React.forwardRef<
   <AvatarPrimitive.Fallback
     ref={ref}
     className={clsx(
-      "flex items-center justify-center",
+      "flex items-center justify-center transition-opacity duration-300 ease-in-out",
       "text-secondary",
       {
         "text-lg": size === "lg",
@@ -48,7 +48,7 @@ type AvatarStatusProps = {
 
 const avatarStatusClassNames = cva(
   [
-    "absolute box-content flex flex-row items-center justify-center rounded-full",
+    "absolute box-content flex flex-row items-center justify-center rounded-full transition-colors duration-300 ease-in-out",
   ],
   {
     variants: {
@@ -132,6 +132,7 @@ const AvatarStatus = React.forwardRef<
           type,
           variant,
         }),
+        "transition-colors duration-300 ease-in-out",
         className
       )}
       {...props}
@@ -155,7 +156,7 @@ const AvatarTitle = React.forwardRef<
   <h3
     ref={ref}
     className={clsx(
-      "text-foreground font-semibold",
+      "text-foreground font-semibold transition-opacity duration-300 ease-in-out",
       {
         "text-base": size === "lg",
         "text-sm": size === "md",
@@ -179,7 +180,7 @@ const AvatarSubtitle = React.forwardRef<
   <p
     ref={ref}
     className={clsx(
-      "text-subtle font-medium",
+      "text-subtle font-medium transition-opacity duration-300 ease-in-out",
       {
         "text-base": size === "lg",
         "text-sm": size === "md",
@@ -273,7 +274,7 @@ const Avatar = React.forwardRef<
           ref={ref}
           className={clsx(
             {
-              "relative flex shrink-0 flex-col items-center justify-center bg-disabled border border-background": true,
+              "relative flex shrink-0 flex-col items-center justify-center bg-disabled border border-background transition-transform duration-300 ease-in-out transform hover:scale-105": true,
               "h-[60px] w-[60px]": size === "lg",
               "h-12 w-12": size === "md",
               "h-8 w-8": size === "sm",
@@ -302,7 +303,7 @@ const Avatar = React.forwardRef<
           )}
           <AvatarPrimitive.Image
             className={clsx(
-              "aspect-square object-cover",
+              "aspect-square object-cover transition-opacity duration-300 ease-in-out",
               {
                 "rounded-full": variant === "circle",
                 "rounded-radius-md": variant === "square",
@@ -324,7 +325,7 @@ const Avatar = React.forwardRef<
           </AvatarFallback>
         </AvatarPrimitive.Root>
         {title && (
-          <div className="flex flex-col">
+          <div className="flex flex-col transition-opacity duration-300 ease-in-out">
             <AvatarTitle size={size}>{title}</AvatarTitle>
             {subtitle && (
               <AvatarSubtitle size={size}>{subtitle}</AvatarSubtitle>
