@@ -1,3 +1,4 @@
+```tsx
 // ion/SideNavigationItem: Generated with Ion on 8/5/2024, 8:46:42 PM
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
 import { Slot } from "@radix-ui/react-slot";
@@ -73,7 +74,7 @@ export interface NavigationMenuLinkProps
 /* ---------------------------------- Component --------------------------------- */
 
 const navigationMenuLinkClassnames = cva(
-  "group flex w-full font-medium cursor-default justify-between items-center gap-3 rounded-radius-xs border-transparent px-3 py-2 text-base no-underline outline-none transition-colors",
+  "group flex w-full font-medium cursor-default justify-between items-center gap-3 rounded-radius-xs border-transparent px-3 py-2 text-base no-underline outline-none transition-colors transition-transform duration-200 ease-in-out",
   {
     variants: {
       type: {
@@ -108,6 +109,10 @@ const navigationMenuLinkClassnames = cva(
         className: "bg-primary-container text-on-primary-container",
       },
     ],
+    defaultVariants: {
+      type: "default",
+      selected: false,
+    },
   }
 );
 
@@ -136,6 +141,8 @@ const NavigationMenuLink = React.forwardRef<
             type,
             selected,
           }),
+          "transform transition-transform duration-200 ease-in-out",
+          "hover:scale-105 focus:scale-105",
           !children && "w-fit"
         ),
         className
@@ -146,7 +153,7 @@ const NavigationMenuLink = React.forwardRef<
         <Slot
           className={twMerge(
             clsx(
-              "shrink-0 text-subtle",
+              "shrink-0 text-subtle transition-colors duration-200 ease-in-out",
               type === "default" && {
                 "text-subtle": !selected,
                 "text-on-primary-container": selected,
@@ -163,7 +170,7 @@ const NavigationMenuLink = React.forwardRef<
       {children && (
         <Slot
           className={clsx(
-            "shrink-0",
+            "shrink-0 transition-colors duration-200 ease-in-out",
             type === "default" && {
               "text-subtle": !selected,
               "text-on-primary-container": selected,
@@ -186,3 +193,4 @@ export {
   NavigationMenuLink,
   NavigationMenuList,
 };
+```
