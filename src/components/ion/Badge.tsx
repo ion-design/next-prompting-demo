@@ -1,10 +1,23 @@
-// ion/Badge: Generated with Ion on 7/30/2024, 3:52:16 PM
+```typescript
+// ion/Badge: Updated with Animations
 import { cva } from "class-variance-authority";
 import clsx from "clsx";
 import React from "react";
 
 const badgeClassNames = cva(
-  ["font-semibold", "rounded-full", "shrink-0", "whitespace-nowrap", "border"],
+  [
+    "font-semibold",
+    "rounded-full",
+    "shrink-0",
+    "whitespace-nowrap",
+    "border",
+    "transition-transform",
+    "duration-300",
+    "ease-in-out",
+    "transform",
+    "hover:scale-105",
+    "hover:shadow-lg",
+  ],
   {
     variants: {
       type: {
@@ -149,7 +162,7 @@ export type BadgeProps = React.HTMLAttributes<HTMLDivElement> & {
    */
   type?: "text" | "number";
   /** Variant of the badge
-   * @default 'high'
+   * @default 'soft'
    */
   variant?: "soft" | "outline";
   /** Color of the badge
@@ -213,3 +226,4 @@ export const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
 Badge.displayName = "Badge";
 
 export default Badge;
+```
