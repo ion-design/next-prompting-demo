@@ -1,7 +1,9 @@
-// ion/Input: Generated with Ion on 8/13/2024, 1:29:37 PM
+```tsx
+// ion/Input: Enhanced with animations
 import clsx from "clsx";
 import * as React from "react";
 import { twMerge } from "tailwind-merge";
+import { motion } from "framer-motion";
 
 import Hint from "./Hint";
 import Label from "./Label";
@@ -52,7 +54,7 @@ export const InputContainer = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLSpanElement> & InputContainerProps
 >(({ className, error, disabled, ...props }, ref) => (
-  <span
+  <motion.span
     ref={ref}
     className={twMerge(
       inputContainerClasses({
@@ -62,6 +64,9 @@ export const InputContainer = React.forwardRef<
       className
     )}
     {...props}
+    initial={{ opacity: 0, y: -10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, ease: "easeOut" }}
   />
 ));
 InputContainer.displayName = "InputContainer";
@@ -125,7 +130,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const ariaInvalid = props["aria-invalid"] ?? !!error;
 
     return (
-      <div className={className}>
+      <motion.div
+        className={className}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         {label && (
           <Label
             id={`${id}__label`}
@@ -144,13 +154,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           disabled={props.disabled}
         >
           {iconLeading && (
-            <span
+            <motion.span
               className={clsx("text-foreground", {
                 "text-on-disabled": props.disabled,
               })}
+              whileHover={{ scale: 1.1 }}
+              whileFocus={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               {iconLeading}
-            </span>
+            </motion.span>
           )}
           <input
             id={id}
@@ -163,13 +176,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {iconTrailing && (
-            <span
+            <motion.span
               className={clsx("text-foreground", {
                 "text-on-disabled": props.disabled,
               })}
+              whileHover={{ scale: 1.1 }}
+              whileFocus={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               {iconTrailing}
-            </span>
+            </motion.span>
           )}
         </InputContainer>
         {hint && (
@@ -183,10 +199,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {hint}
           </Hint>
         )}
-      </div>
+      </motion.div>
     );
   }
 );
 Input.displayName = "Input";
 
 export default Input;
+```
