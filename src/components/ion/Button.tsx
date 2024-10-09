@@ -38,6 +38,15 @@ export const buttonVariants = cva(
     'h-fit',
     'w-fit',
     'disabled:text-on-disabled',
+    'transform',
+    'transition-shadows',
+    'transition-colors',
+    'transition-transform',
+    'duration-200',
+    'ease-in-out',
+    'hover:scale-105',
+    'focus:scale-105',
+    'active:scale-95',
   ],
   {
     variants: {
@@ -159,7 +168,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                   ? `link-${size}`
                   : size,
             }),
-            'transition-shadows transition-colors',
             className
           )
         )}
