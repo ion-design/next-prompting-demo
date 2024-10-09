@@ -1,6 +1,6 @@
-// ion/DatePicker: Generated with Ion on 8/5/2024, 8:46:42 PM
+// ion/DatePicker: Enhanced with Animations on 4/27/2024
 import clsx from "clsx";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { type UseInputOptions, useInput } from "react-day-picker";
 import { twMerge } from "tailwind-merge";
 
@@ -69,15 +69,15 @@ function Datepicker({
   const ariaInvalid = !!error;
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const [inputFocused, setInputFocused] = React.useState(false);
-  const [datePickerOpen, setDatePickerOpen] = React.useState(false);
+  const [inputFocused, setInputFocused] = useState(false);
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
   const { inputProps, dayPickerProps, setSelected } = useInput({
     ...props,
     format,
     defaultSelected: value ?? undefined,
   });
 
-  // This is required to make the datepicker work with controlled components
+  // Handle controlled component behavior
   useEffect(() => {
     if (!value) {
       setSelected(undefined);
@@ -93,7 +93,12 @@ function Datepicker({
   }, [dayPickerProps.selected]);
 
   return (
-    <div className={className}>
+    <div
+      className={twMerge(
+        "transition-all duration-300 ease-in-out",
+        className
+      )}
+    >
       {label && (
         <Label
           id={`${id}__label`}
@@ -124,11 +129,23 @@ function Datepicker({
                   disabled: props.disabled,
                 }),
                 "group-focus-within:primary-focus group-focus:primary-focus",
-                inputFocused && "primary-focus"
+                inputFocused && "primary-focus",
+                "transition-transform duration-300 ease-in-out"
               )
             )}
           >
-            {iconLeading}
+            {iconLeading && (
+              <span
+                className={clsx(
+                  "transition-transform duration-300 ease-in-out",
+                  {
+                    "transform scale-105": inputFocused,
+                  }
+                )}
+              >
+                {iconLeading}
+              </span>
+            )}
             <input
               id={id}
               aria-required={required}
@@ -141,7 +158,7 @@ function Datepicker({
                     : "Choose date"
                   : undefined
               }
-              className={inputClassNames}
+              className={twMerge(inputClassNames, "focus:shadow-none")}
               ref={inputRef}
               onChange={(e) => {
                 inputProps.onChange?.(e);
@@ -161,7 +178,18 @@ function Datepicker({
               disabled={props.disabled}
               {...inputProps}
             />
-            {iconTrailing}
+            {iconTrailing && (
+              <span
+                className={clsx(
+                  "transition-transform duration-300 ease-in-out",
+                  {
+                    "transform scale-105": inputFocused,
+                  }
+                )}
+              >
+                {iconTrailing}
+              </span>
+            )}
           </span>
         </PopoverTrigger>
         <PopoverContent
