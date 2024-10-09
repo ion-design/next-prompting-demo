@@ -1,6 +1,8 @@
-// ion/Hint: Generated with Ion on 8/13/2024, 1:29:37 PM
+```tsx
+// ion/Hint: Enhanced with animations
 import { Info } from "@phosphor-icons/react";
 import clsx from "clsx";
+import { motion } from "framer-motion";
 
 /* ---------------------------------- Type --------------------------------- */
 
@@ -26,7 +28,10 @@ function Hint({
   ...props
 }: HintProps) {
   return (
-    <p
+    <motion.p
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       className={clsx(
         "flex items-center gap-1 text-[11px] leading-[16px]",
         {
@@ -38,10 +43,18 @@ function Hint({
       )}
       {...props}
     >
-      {showIcon && <Info className="h-3 w-3" weight="bold" />}
+      {showIcon && (
+        <motion.span
+          whileHover={{ scale: 1.2 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
+          <Info className="h-3 w-3" weight="bold" />
+        </motion.span>
+      )}
       {children}
-    </p>
+    </motion.p>
   );
 }
 
 export default Hint;
+```
