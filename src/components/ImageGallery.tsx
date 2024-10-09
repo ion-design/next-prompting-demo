@@ -96,3 +96,5 @@ const ImageGallery: React.FC = () => {
 };
 
 export default ImageGallery;
+
+// Animated with AI!

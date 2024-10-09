@@ -338,3 +338,5 @@ const Avatar = React.forwardRef<
 Avatar.displayName = "Avatar";
 
 export default Avatar;
+
+// Animated with AI!

@@ -130,3 +130,5 @@ const ImageUploadAndCrop = () => {
 };
 
 export default ImageUploadAndCrop;
+
+// Animated with AI!

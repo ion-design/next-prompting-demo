@@ -104,3 +104,5 @@ const WeatherCard = () => {
 };
 
 export default WeatherCard;
+
+// Animated with AI!

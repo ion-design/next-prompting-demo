@@ -83,3 +83,5 @@ const RadioGroupItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimit
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 
 export { RadioGroup, RadioGroupItem };
+
+// Animated with AI!

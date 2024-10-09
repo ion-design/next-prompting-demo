@@ -45,3 +45,5 @@ function Hint({
 }
 
 export default Hint;
+
+// Animated with AI!

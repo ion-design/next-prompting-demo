@@ -22,3 +22,5 @@ export default function RootLayout({
 		</html>
 	);
 }
+
+// Animated with AI!

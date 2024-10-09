@@ -122,3 +122,5 @@ function SideNavigation() {
   );
 }
 export default SideNavigation;
+
+// Animated with AI!

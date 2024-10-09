@@ -67,3 +67,5 @@ const StudentPerformanceChart = () => {
 };
 
 export default StudentPerformanceChart;
+
+// Animated with AI!
