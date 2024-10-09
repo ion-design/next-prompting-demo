@@ -25,15 +25,15 @@ export interface NumberInputControlHandlers {
 
 /**
  * Check if the value is a valid number
- * @param value - The value to check
- *  */
+ * @param value - The value to check.
+ */
 function isValidNumber(value: number | string | undefined | null): value is number {
   return (
     (typeof value === 'number' ? value < Number.MAX_SAFE_INTEGER : !Number.isNaN(Number(value))) && !Number.isNaN(value)
   );
 }
 /**
- * Get the number of decimal places in a number
+ * Get the number of decimal places in a number.
  */
 function getDecimalPlaces(inputValue: number | string) {
   const match = String(inputValue).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
@@ -44,7 +44,7 @@ function getDecimalPlaces(inputValue: number | string) {
 }
 
 /**
- * Returns a valid value depending on the min and max values
+ * Returns a valid value depending on the min and max values.
  */
 export function clamp(value: number, min: number | undefined, max: number | undefined) {
   if (min === undefined && max === undefined) {
@@ -60,7 +60,7 @@ export function clamp(value: number, min: number | undefined, max: number | unde
 }
 
 /**
- * Increment or decrement the value of the input
+ * Increment or decrement the value of the input.
  */
 function incrementOrDecrement({
   action,
@@ -267,7 +267,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     };
 
     return (
-      <div className={className}>
+      <div className={clsx(className, "transition-opacity duration-300 ease-in-out")}>
         {label && (
           <Label
             id={`${id}__label`}
@@ -283,7 +283,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         <InputContainer className="pr-0" error={error} disabled={props.disabled}>
           {iconLeading && (
             <span
-              className={clsx('text-subtle', {
+              className={clsx('text-subtle transition-transform duration-200 ease-in-out transform hover:scale-105', {
                 'text-on-disabled': props.disabled,
               })}
             >
@@ -298,7 +298,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             value={_value}
             onValueChange={handleValueChange}
             getInputRef={inputRef}
-            className={twMerge(clsx(inputClassNames, inputClassName))}
+            className={twMerge(clsx(inputClassNames, inputClassName, "transition-transform duration-200 ease-in-out focus:scale-105"))}
             min={min}
             max={max}
             allowLeadingZeros={allowLeadingZeros}
@@ -324,7 +324,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           />
           {iconTrailing && (
             <span
-              className={clsx('text-subtle', {
+              className={clsx('text-subtle transition-transform duration-200 ease-in-out transform hover:scale-105', {
                 'text-on-disabled': props.disabled,
               })}
             >
@@ -344,7 +344,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                     e.preventDefault();
                   }
                 }}
-                className="h-5 w-5 outline-none flex items-center justify-center text-secondary hover:text-foreground transition-all bg-neutral-accent active:bg-neutral-container hover:bg-neutral-accent active:text-foreground rounded-full aria-disabled:pointer-events-none aria-disabled:text-on-disabled"
+                className="h-5 w-5 outline-none flex items-center justify-center text-secondary hover:text-foreground transition-all transform duration-200 ease-in-out hover:scale-105 active:scale-95 bg-neutral-accent active:bg-neutral-container hover:bg-neutral-accent active:text-foreground rounded-full aria-disabled:pointer-events-none aria-disabled:text-on-disabled"
                 aria-label="Decrement"
               >
                 <Minus weight="bold" className="w-[10px] h-[10px]" />
@@ -361,7 +361,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                     e.preventDefault();
                   }
                 }}
-                className="h-5 w-5 flex outline-none items-center justify-center text-secondary hover:text-foreground transition-all bg-neutral-accent active:bg-neutral-container hover:bg-neutral-accent active:text-foreground rounded-full aria-disabled:pointer-events-none aria-disabled:text-on-disabled"
+                className="h-5 w-5 flex outline-none items-center justify-center text-secondary hover:text-foreground transition-all transform duration-200 ease-in-out hover:scale-105 active:scale-95 bg-neutral-accent active:bg-neutral-container hover:bg-neutral-accent active:text-foreground rounded-full aria-disabled:pointer-events-none aria-disabled:text-on-disabled"
                 aria-label="Increment"
               >
                 <Plus weight="bold" className="w-[10px] h-[10px]" />
