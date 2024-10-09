@@ -117,3 +117,5 @@ const Tag = React.forwardRef<HTMLButtonElement, TagProps>(({ className, variant 
 Tag.displayName = "Tag";
 
 export default Tag;
+
+// Animated with AI!
