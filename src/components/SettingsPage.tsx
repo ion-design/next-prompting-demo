@@ -386,3 +386,5 @@ const SettingsPage = () => {
 }
 
 export default SettingsPage;
+
+// Animated with AI!

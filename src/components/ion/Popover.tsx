@@ -30,3 +30,5 @@ const PopoverContent = React.forwardRef<
 PopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
 export { PopoverRoot as Popover, PopoverContent, PopoverTrigger };
+
+// Animated with AI!

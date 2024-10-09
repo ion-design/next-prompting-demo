@@ -62,3 +62,5 @@ function Calendar({
 Calendar.displayName = "Calendar";
 
 export { Calendar };
+
+// Animated with AI!

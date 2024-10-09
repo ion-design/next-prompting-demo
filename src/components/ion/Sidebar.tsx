@@ -28,3 +28,5 @@ export default function Sidebar({
     </aside>
   );
 }
+
+// Animated with AI!

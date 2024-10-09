@@ -165,3 +165,5 @@ const SunAnimation = () => (
 );
 
 export default WeatherWidget;
+
+// Animated with AI!
