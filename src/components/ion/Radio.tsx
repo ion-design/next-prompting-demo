@@ -2,6 +2,7 @@ import { Circle } from '@phosphor-icons/react';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import clsx from 'clsx';
 import * as React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import Label from './Label';
 
@@ -9,7 +10,15 @@ const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
 >(({ className, ...props }, ref) => {
-  return <RadioGroupPrimitive.Root className={clsx('grid gap-2', className)} {...props} ref={ref} />;
+  return (
+    <RadioGroupPrimitive.Root
+      className={clsx('grid gap-2', className)}
+      {...props}
+      ref={ref}
+    >
+      {props.children}
+    </RadioGroupPrimitive.Root>
+  );
 });
 
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
@@ -29,13 +38,33 @@ type RadioGroupItemProps = React.ComponentPropsWithoutRef<typeof RadioGroupPrimi
   radioClassName?: string;
 };
 
-const RadioGroupItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.Item>, RadioGroupItemProps>(
-  ({ className, label, required, description, helper, error, ...props }, ref) => {
+const RadioGroupItem = React.forwardRef<
+  React.ElementRef<typeof RadioGroupPrimitive.Item>,
+  RadioGroupItemProps
+>(
+  (
+    {
+      className,
+      label,
+      required,
+      description,
+      helper,
+      error,
+      ...props
+    },
+    ref
+  ) => {
     const generatedId = React.useId();
     const id = props.id || generatedId;
     const ariaInvalid = props['aria-invalid'] || !!error;
+
     return (
-      <span className="flex items-center space-x-2">
+      <motion.span
+        className="flex items-center space-x-2"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+      >
         <RadioGroupPrimitive.Item
           id={id}
           ref={ref}
@@ -45,22 +74,31 @@ const RadioGroupItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimit
           className={clsx(
             'bg-background focus-visible:primary-focus focus-visible:border-stroke-primary aspect-square h-4 w-4 rounded-full border border-outline text-subtle hover:border-stroke-strong aria-checked:border-primary aria-checked:bg-primary aria-checked:text-primary',
             'disabled:cursor-not-allowed disabled:border-none disabled:bg-disabled disabled:aria-checked:bg-disabled disabled:aria-checked:text-subtle',
-            'transition-shadows transition-colors',
+            'transition-colors transition-transform duration-300 ease-in-out',
             error ? 'border-danger aria-checked:border-danger aria-checked:bg-danger' : 'border-stroke',
+            'transform hover:scale-105',
             className
           )}
           {...props}
         >
-          <RadioGroupPrimitive.Indicator className="relative flex items-center justify-center">
-            <Circle
-              weight="fill"
-              className={clsx(
-                'parent h-2.5 w-2.5 rounded-full border-none fill-white text-current disabled:fill-blue-500',
-                {
-                  'fill-soft': props.disabled,
-                }
-              )}
-            />
+          <RadioGroupPrimitive.Indicator asChild>
+            <motion.div
+              className="relative flex items-center justify-center"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            >
+              <Circle
+                weight="fill"
+                className={clsx(
+                  'h-2.5 w-2.5 rounded-full border-none fill-white text-current disabled:fill-blue-500',
+                  {
+                    'fill-soft': props.disabled,
+                  }
+                )}
+              />
+            </motion.div>
           </RadioGroupPrimitive.Indicator>
         </RadioGroupPrimitive.Item>
         {label && (
@@ -76,7 +114,7 @@ const RadioGroupItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimit
             {label}
           </Label>
         )}
-      </span>
+      </motion.span>
     );
   }
 );

@@ -19,13 +19,14 @@ const SelectValue = SelectPrimitive.Value;
 export const selectTriggerClassName = (error?: boolean | string) =>
   twMerge(
     clsx(
-      'bg-background focus:border-stroke-primary focus:primary-focus focus-within:border-stroke-primary group flex min-h-9 w-full items-center justify-between rounded-radius-sm border border-stroke px-3 py-2 text-sm data-[placeholder]:text-subtle transition-all',
+      'bg-background focus:border-stroke-primary focus:primary-focus focus-within:border-stroke-primary group flex min-h-9 w-full items-center justify-between rounded-radius-sm border border-stroke px-3 py-2 text-sm data-[placeholder]:text-subtle transition-colors duration-300 ease-in-out',
       'disabled:border-stroke-disabled disabled:pointer-events-none disabled:bg-disabled disabled:text-on-disabled disabled:data-[placeholder]:text-on-disabled',
       {
         'border-danger': error,
       }
     )
   );
+
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
@@ -33,12 +34,21 @@ const SelectTrigger = React.forwardRef<
     error?: boolean | string;
   }
 >(({ className, children, iconLeading, error, ...props }, ref) => (
-  <SelectPrimitive.Trigger ref={ref} className={twMerge(clsx(selectTriggerClassName(error), className))} {...props}>
-    <span className="flex items-center gap-3 ">
-      {iconLeading && <span className="group-disabled:text-on-disabled text-foreground">{iconLeading}</span>} {children}
+  <SelectPrimitive.Trigger
+    ref={ref}
+    className={twMerge(clsx(selectTriggerClassName(error), className))}
+    {...props}
+  >
+    <span className="flex items-center gap-3 transition-transform duration-300 ease-in-out">
+      {iconLeading && (
+        <span className="group-disabled:text-on-disabled text-foreground transition-opacity duration-300 ease-in-out">
+          {iconLeading}
+        </span>
+      )}{' '}
+      {children}
     </span>
     <SelectPrimitive.Icon asChild>
-      <CaretDown className="ml-3 h-4 w-4 transition-transform duration-200 ease-in group-data-[state=open]:rotate-180" />
+      <CaretDown className="ml-3 h-4 w-4 transition-transform duration-200 ease-in-out group-data-[state=open]:rotate-180" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
@@ -54,8 +64,11 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={clsx(
-        'relative z-50 min-w-[8rem] overflow-hidden rounded-radius border border-stroke-subtle bg-background text-on-background shadow-medium',
-        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+        'relative z-50 min-w-[8rem] overflow-hidden rounded-radius border border-stroke-subtle bg-background text-on-background shadow-medium transition-opacity duration-300 ease-in-out',
+        'data-[state=open]:opacity-100 data-[state=closed]:opacity-0',
+        'data-[state=open]:animate-fadeIn data-[state=closed]:animate-fadeOut',
+        'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+        'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
         position === 'popper' &&
           'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
         className
@@ -65,7 +78,7 @@ const SelectContent = React.forwardRef<
     >
       <SelectPrimitive.Viewport
         className={clsx(
-          'p-2',
+          'p-2 transition-all duration-300 ease-in-out',
           position === 'popper' &&
             'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]'
         )}
@@ -82,7 +95,11 @@ const SelectLabel = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
 >(({ className, ...props }, ref) => (
-  <SelectPrimitive.Label ref={ref} className={clsx('px-3 py-2 text-sm', className)} {...props} />
+  <SelectPrimitive.Label
+    ref={ref}
+    className={clsx('px-3 py-2 text-sm transition-opacity duration-300 ease-in-out', className)}
+    {...props}
+  />
 ));
 SelectLabel.displayName = SelectPrimitive.Label.displayName;
 
@@ -99,22 +116,33 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={clsx(
-      'group relative flex w-full cursor-default select-none items-center gap-1 rounded-radius-xs p-2 text-sm font-semibold text-on-background outline-none focus:bg-container hover:bg-container data-[disabled]:pointer-events-none data-[state=checked]:pr-8 data-[state=open]:pr-8 data-[disabled]:text-on-disabled',
+      'group relative flex w-full cursor-default select-none items-center gap-1 rounded-radius-xs p-2 text-sm font-semibold text-on-background outline-none focus:bg-container hover:bg-container transition-colors duration-200 ease-in-out',
+      'data-[disabled]:pointer-events-none data-[state=checked]:pr-8 data-[state=open]:pr-8 data-[disabled]:text-on-disabled',
       className
     )}
     {...props}
   >
     <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <Check className="h-4 w-4 text-secondary data-[disabled]:text-on-disabled" />
+        <Check className="h-4 w-4 text-secondary data-[disabled]:text-on-disabled transition-opacity duration-300 ease-in-out" />
       </SelectPrimitive.ItemIndicator>
     </span>
-    {iconLeading}
+    {iconLeading && (
+      <span className="text-foreground transition-opacity duration-300 ease-in-out">
+        {iconLeading}
+      </span>
+    )}
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
     {description && (
-      <p className="font-normal text-subtle group-data-[disabled]:text-on-disabled ml-1">{description}</p>
+      <p className="font-normal text-subtle group-data-[disabled]:text-on-disabled ml-1 transition-opacity duration-300 ease-in-out">
+        {description}
+      </p>
     )}
-    <span className="ml-auto font-normal text-subtle">{suffix}</span>
+    {suffix && (
+      <span className="ml-auto font-normal text-subtle transition-opacity duration-300 ease-in-out">
+        {suffix}
+      </span>
+    )}
   </SelectPrimitive.Item>
 ));
 SelectItem.displayName = SelectPrimitive.Item.displayName;
@@ -125,7 +153,14 @@ const SelectSeparator = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
 >(({ className, ...props }, ref) => (
-  <SelectPrimitive.Separator ref={ref} className={clsx('bg-muted -mx-1 my-1 h-px', className)} {...props} />
+  <SelectPrimitive.Separator
+    ref={ref}
+    className={clsx(
+      'bg-muted -mx-1 my-1 h-px transition-all duration-300 ease-in-out',
+      className
+    )}
+    {...props}
+  />
 ));
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
@@ -162,7 +197,7 @@ export interface SelectProps extends SelectPrimitive.SelectProps {
   showHintIcon?: boolean;
   /** Display the select with an error state */
   error?: boolean | string;
-  /** Dispaly required mark to the right of the label */
+  /** Display required mark to the right of the label */
   required?: boolean;
   /** Classname for the select container (use this to position the select) */
   className?: string;
@@ -207,7 +242,13 @@ const Select = React.forwardRef<
           }}
         >
           {label && (
-            <Label id={`${id}__label`} required={required} disabled={props.disabled} helper={helper} className="mb-1">
+            <Label
+              id={`${id}__label`}
+              required={required}
+              disabled={props.disabled}
+              helper={helper}
+              className="mb-2 transition-opacity duration-300 ease-in-out"
+            >
               {label}
             </Label>
           )}
@@ -224,12 +265,18 @@ const Select = React.forwardRef<
             <SelectValue placeholder={placeholder} />
           </SelectTrigger>
           {hint && (
-            <Hint id={`${id}__hint`} showIcon={showHintIcon} disabled={props.disabled} error={error} className="mt-1">
+            <Hint
+              id={`${id}__hint`}
+              showIcon={showHintIcon}
+              disabled={props.disabled}
+              error={error}
+              className="mt-1 transition-opacity duration-300 ease-in-out"
+            >
               {hint}
             </Hint>
           )}
-          <SelectContent className="max-h-96" align="end">
-            {options.map((option) => (
+          <SelectContent className="max-h-96">
+            {options.map((option, index) => (
               <SelectItem
                 key={option.value}
                 value={option.value}
@@ -237,7 +284,14 @@ const Select = React.forwardRef<
                 iconLeading={option.iconLeading}
                 description={option.description}
                 suffix={option.suffix}
-                className={option.className}
+                className={clsx(
+                  option.className,
+                  'transition-transform duration-300 ease-in-out',
+                  {
+                    'delay-75': index % 2 === 0,
+                    'delay-100': index % 2 !== 0,
+                  }
+                )}
               >
                 {option.label}
               </SelectItem>

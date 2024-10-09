@@ -35,11 +35,12 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, 
           aria-describedby={description ? `${id}__description` : undefined}
           className={clsx(
             'group',
-            'data-[state=checked]:focus-visible:primary-focus focus-visible:neutral-focus peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent shadow-sm transition-colors',
+            'data-[state=checked]:focus-visible:primary-focus focus-visible:neutral-focus peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent shadow-sm transition-colors transition-shadow duration-300 ease-in-out',
             'disabled:pointer-events-none disabled:bg-disabled',
             {
               'data-[state=checked]:bg-primary data-[state=unchecked]:bg-on-disabled data-[state=unchecked]:hover:bg-soft':
                 !props.disabled,
+              'data-[state=checked]:shadow-lg data-[state=unchecked]:shadow-sm': !props.disabled,
             },
             {
               'h-4 w-8': size === 'sm',
@@ -52,11 +53,14 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, 
         >
           <SwitchPrimitives.Thumb
             className={clsx(
-              'pointer-events-none block rounded-full bg-white shadow-lg ring-0 transition-transform group-disabled:bg-on-disabled group-disabled:shadow-none data-[state=unchecked]:translate-x-0',
+              'pointer-events-none block rounded-full bg-white shadow-lg ring-0 transition-transform transition-shadow duration-300 ease-in-out group-disabled:bg-on-disabled group-disabled:shadow-none data-[state=unchecked]:translate-x-0',
               {
                 'h-3 w-3 data-[state=checked]:translate-x-4': size === 'sm',
                 'h-5 w-5 data-[state=checked]:translate-x-6': size === 'md',
                 'h-6 w-6 data-[state=checked]:translate-x-5': size === 'lg',
+              },
+              {
+                'shadow-md data-[state=checked]:shadow-lg': !props.disabled,
               }
             )}
           />

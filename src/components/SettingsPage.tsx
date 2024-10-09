@@ -1,31 +1,4 @@
-/* a sleek and modern settings page component for a SaaS management dashboard, encapsulated in a floating card with subtle shadow and rounded corners. The component should feature a tabbed interface with smooth transitions between sections. Include the following tabs and settings:
- 
-General:
-Company name and logo upload with drag-and-drop functionality
-Time zone selector
-Language preference dropdown
- 
- 
-Users & Permissions:
-User list with avatars, roles, and last active status
-Inline role editing with a popover interface
-Bulk actions menu for managing multiple users
-Invite new user form with email validation
- 
- 
-API & Integrations:
-API key management with a toggle to show/hide keys
-OAuth token generator with a copy-to-clipboard button
-Webhook URL configuration with test ping functionality
-Third-party integration toggles with connection status indicators
- 
- 
-Billing & Subscription:
-Current plan display with usage metrics and progress bars
-Interactive pricing table for plan comparison and upgrades
-Payment method management with card brand icons
-Billing history accordion with expandable invoice details
- */
+/* a sleek and modern settings page component for a SaaS management dashboard, enhanced with subtle animations for a luxury feel */
 import React, { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
@@ -55,10 +28,15 @@ import Slider from '@/components/ion/Slider';
 import Badge from '@/components/ion/Badge';
 import LineItem from '@/components/ion/LineItem';
 
+const fadeInVariant = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState('general');
   const [companyName, setCompanyName] = useState('');
-  const [companyLogo, setCompanyLogo] = useState(null);
+  const [companyLogo, setCompanyLogo] = useState<File | null>(null);
   const [timeZone, setTimeZone] = useState('');
   const [language, setLanguage] = useState('');
   const [users, setUsers] = useState([]);
@@ -66,9 +44,9 @@ const SettingsPage = () => {
   const [showApiKeys, setShowApiKeys] = useState(false);
   const [webhookUrl, setWebhookUrl] = useState('');
   const [currentPlan, setCurrentPlan] = useState('');
-  const [expandedInvoice, setExpandedInvoice] = useState(null);
+  const [expandedInvoice, setExpandedInvoice] = useState<number | null>(null);
 
-  const onDrop = useCallback((acceptedFiles) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     setCompanyLogo(acceptedFiles[0]);
   }, []);
 
@@ -93,8 +71,23 @@ const SettingsPage = () => {
   }, []);
 
   return (
-    <div className="bg-background w-full max-w-4xl mx-auto p-8 rounded-radius-lg shadow-medium">
-      <h1 className="text-3xl font-semibold text-foreground mb-6">Settings</h1>
+    <motion.div
+      className="bg-background w-full max-w-4xl mx-auto p-8 rounded-radius-lg shadow-medium"
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: { opacity: 0, scale: 0.95 },
+        visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } },
+      }}
+    >
+      <motion.h1
+        className="text-3xl font-semibold text-foreground mb-6"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.5, ease: 'easeOut' }}
+      >
+        Settings
+      </motion.h1>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
@@ -105,57 +98,91 @@ const SettingsPage = () => {
         </TabsList>
 
         <TabsContent value="general">
-          <div className="space-y-6">
+          <motion.div
+            className="space-y-6"
+            initial="hidden"
+            animate="visible"
+            variants={fadeInVariant}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+          >
             <Input
               label="Company Name"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
             />
 
-            <div>
-              <label className="block text-sm font-medium text-secondary mb-2">Company Logo</label>
-              <div
-                {...getRootProps()}
-                className={`border-2 border-dashed border-stroke p-8 rounded-radius-sm text-center cursor-pointer transition-colors ${
-                  isDragActive ? 'border-primary bg-primary-accent' : 'hover:border-primary-hover'
-                }`}
-              >
-                <input {...getInputProps()} />
-                <Upload size={48} className="mx-auto mb-4 text-secondary" />
-                <p className="text-secondary">
-                  {companyLogo ? companyLogo.name : 'Drag & drop your logo here, or click to select a file'}
-                </p>
+            <motion.div
+              className="space-y-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.5, ease: 'easeOut' }}
+            >
+              <div>
+                <label className="block text-sm font-medium text-secondary mb-2">Company Logo</label>
+                <div
+                  {...getRootProps()}
+                  className={`border-2 border-dashed border-stroke p-8 rounded-radius-sm text-center cursor-pointer transition-colors ${
+                    isDragActive ? 'border-primary bg-primary-accent' : 'hover:border-primary-hover'
+                  }`}
+                >
+                  <input {...getInputProps()} />
+                  <Upload size={48} className="mx-auto mb-4 text-secondary" />
+                  <p className="text-secondary">
+                    {companyLogo ? companyLogo.name : 'Drag & drop your logo here, or click to select a file'}
+                  </p>
+                </div>
               </div>
-            </div>
+            </motion.div>
 
-            <Select
-              label="Time Zone"
-              options={[
-                { value: 'UTC', label: 'UTC' },
-                { value: 'EST', label: 'Eastern Time (EST)' },
-                { value: 'PST', label: 'Pacific Time (PST)' },
-              ]}
-              value={timeZone}
-              onValueChange={setTimeZone}
-            />
+            <motion.div
+              className="space-y-4"
+              initial="hidden"
+              animate="visible"
+              variants={fadeInVariant}
+              transition={{ delay: 0.4, duration: 0.5, ease: 'easeOut' }}
+            >
+              <Select
+                label="Time Zone"
+                options={[
+                  { value: 'UTC', label: 'UTC' },
+                  { value: 'EST', label: 'Eastern Time (EST)' },
+                  { value: 'PST', label: 'Pacific Time (PST)' },
+                ]}
+                value={timeZone}
+                onValueChange={setTimeZone}
+              />
 
-            <Select
-              label="Language"
-              options={[
-                { value: 'en', label: 'English', iconLeading: <span className="fi fi-gb"></span> },
-                { value: 'es', label: 'Español', iconLeading: <span className="fi fi-es"></span> },
-                { value: 'fr', label: 'Français', iconLeading: <span className="fi fi-fr"></span> },
-              ]}
-              value={language}
-              onValueChange={setLanguage}
-            />
-          </div>
+              <Select
+                label="Language"
+                options={[
+                  { value: 'en', label: 'English', iconLeading: <span className="fi fi-gb"></span> },
+                  { value: 'es', label: 'Español', iconLeading: <span className="fi fi-es"></span> },
+                  { value: 'fr', label: 'Français', iconLeading: <span className="fi fi-fr"></span> },
+                ]}
+                value={language}
+                onValueChange={setLanguage}
+              />
+            </motion.div>
+          </motion.div>
         </TabsContent>
 
         <TabsContent value="users">
-          <div className="space-y-6">
+          <motion.div
+            className="space-y-6"
+            initial="hidden"
+            animate="visible"
+            variants={fadeInVariant}
+            transition={{ delay: 0.5, duration: 0.5, ease: 'easeOut' }}
+          >
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-foreground">User List</h2>
+              <motion.h2
+                className="text-xl font-semibold text-foreground"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1, duration: 0.5, ease: 'easeOut' }}
+              >
+                User List
+              </motion.h2>
               <Button
                 variant="outline"
                 color="primary"
@@ -166,60 +193,85 @@ const SettingsPage = () => {
               </Button>
             </div>
 
-            <div className="space-y-4">
-              {users.map((user) => (
-                <div key={user.id} className="flex items-center justify-between p-4 bg-container rounded-radius-sm">
-                  <div className="flex items-center space-x-4">
-                    <Avatar
-                      size="md"
-                      src={`https://i.pravatar.cc/150?u=${user.id}`}
-                      alt={user.name}
-                    />
-                    <div>
-                      <p className="font-semibold text-foreground">{user.name}</p>
-                      <p className="text-sm text-secondary">{user.role}</p>
+            <AnimatePresence>
+              <motion.div
+                className="space-y-4"
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={{
+                  visible: { transition: { staggerChildren: 0.05 } },
+                  hidden: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
+                }}
+              >
+                {users.map((user) => (
+                  <motion.div
+                    key={user.id}
+                    className="flex items-center justify-between p-4 bg-container rounded-radius-sm"
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  >
+                    <div className="flex items-center space-x-4">
+                      <Avatar
+                        size="md"
+                        src={`https://i.pravatar.cc/150?u=${user.id}`}
+                        alt={user.name}
+                      />
+                      <div>
+                        <p className="font-semibold text-foreground">{user.name}</p>
+                        <p className="text-sm text-secondary">{user.role}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm text-subtle">Last active: {user.lastActive}</span>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="ghost" color="neutral" size="sm">
-                          <DotsThreeVertical size={16} weight="bold" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-48">
-                        <div className="space-y-2">
-                          <Button
-                            variant="ghost"
-                            color="neutral"
-                            size="sm"
-                            className="w-full justify-start"
-                            iconLeading={<PencilSimple size={16} weight="bold" />}
-                          >
-                            Edit Role
+                    <div className="flex items-center space-x-4">
+                      <span className="text-sm text-subtle">Last active: {user.lastActive}</span>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="ghost" color="neutral" size="sm">
+                            <DotsThreeVertical size={16} weight="bold" />
                           </Button>
-                          <Button
-                            variant="ghost"
-                            color="danger"
-                            size="sm"
-                            className="w-full justify-start"
-                            iconLeading={<Trash size={16} weight="bold" />}
-                          >
-                            Remove User
-                          </Button>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-48">
+                          <div className="space-y-2">
+                            <Button
+                              variant="ghost"
+                              color="neutral"
+                              size="sm"
+                              className="w-full justify-start"
+                              iconLeading={<PencilSimple size={16} weight="bold" />}
+                            >
+                              Edit Role
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              color="danger"
+                              size="sm"
+                              className="w-full justify-start"
+                              iconLeading={<Trash size={16} weight="bold" />}
+                            >
+                              Remove User
+                            </Button>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
         </TabsContent>
 
         <TabsContent value="api">
-          <div className="space-y-6">
+          <motion.div
+            className="space-y-6"
+            initial="hidden"
+            animate="visible"
+            variants={fadeInVariant}
+            transition={{ delay: 0.6, duration: 0.5, ease: 'easeOut' }}
+          >
             <div>
               <h2 className="text-xl font-semibold text-foreground mb-4">API Keys</h2>
               <Switch
@@ -227,27 +279,37 @@ const SettingsPage = () => {
                 checked={showApiKeys}
                 onCheckedChange={setShowApiKeys}
               />
-              <div className="mt-4 space-y-4">
-                {apiKeys.map((apiKey) => (
-                  <div key={apiKey.id} className="flex items-center justify-between p-4 bg-container rounded-radius-sm">
-                    <div>
-                      <p className="font-semibold text-foreground">{apiKey.name}</p>
-                      <p className="text-sm text-secondary">
-                        {showApiKeys ? apiKey.key : '••••••••••••••••'}
-                      </p>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      color="neutral"
-                      size="sm"
-                      iconLeading={<Copy size={16} weight="bold" />}
-                      onClick={() => navigator.clipboard.writeText(apiKey.key)}
-                    >
-                      Copy
-                    </Button>
+              <AnimatePresence>
+                {showApiKeys && (
+                  <motion.div
+                    className="mt-4 space-y-4"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  >
+                    {apiKeys.map((apiKey) => (
+                      <div key={apiKey.id} className="flex items-center justify-between p-4 bg-container rounded-radius-sm">
+                        <div>
+                          <p className="font-semibold text-foreground">{apiKey.name}</p>
+                          <p className="text-sm text-secondary">
+                            {showApiKeys ? apiKey.key : '••••••••••••••••'}
+                          </p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          color="neutral"
+                          size="sm"
+                          iconLeading={<Copy size={16} weight="bold" />}
+                          onClick={() => navigator.clipboard.writeText(apiKey.key)}
+                        >
+                          Copy
+                        </Button>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div>
@@ -272,18 +334,30 @@ const SettingsPage = () => {
               <h2 className="text-xl font-semibold text-foreground mb-4">Third-party Integrations</h2>
               <div className="space-y-4">
                 {['Slack', 'Google Analytics', 'Zapier'].map((integration) => (
-                  <div key={integration} className="flex items-center justify-between p-4 bg-container rounded-radius-sm">
+                  <motion.div
+                    key={integration}
+                    className="flex items-center justify-between p-4 bg-container rounded-radius-sm"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  >
                     <span className="font-semibold text-foreground">{integration}</span>
                     <Switch />
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         </TabsContent>
 
         <TabsContent value="billing">
-          <div className="space-y-6">
+          <motion.div
+            className="space-y-6"
+            initial="hidden"
+            animate="visible"
+            variants={fadeInVariant}
+            transition={{ delay: 0.7, duration: 0.5, ease: 'easeOut' }}
+          >
             <div>
               <h2 className="text-xl font-semibold text-foreground mb-4">Current Plan</h2>
               <div className="p-4 bg-container rounded-radius-sm">
@@ -343,7 +417,14 @@ const SettingsPage = () => {
                   { id: 2, date: '2023-04-01', amount: '$99.00', status: 'Paid' },
                   { id: 3, date: '2023-03-01', amount: '$99.00', status: 'Paid' },
                 ].map((invoice) => (
-                  <div key={invoice.id} className="bg-container rounded-radius-sm overflow-hidden">
+                  <motion.div
+                    key={invoice.id}
+                    className="bg-container rounded-radius-sm overflow-hidden"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  >
                     <div 
                       className="p-4 cursor-pointer flex justify-between items-center"
                       onClick={() => setExpandedInvoice(expandedInvoice === invoice.id ? null : invoice.id)}
@@ -360,10 +441,10 @@ const SettingsPage = () => {
                     <AnimatePresence>
                       {expandedInvoice === invoice.id && (
                         <motion.div
-                          initial={{ height: 0 }}
-                          animate={{ height: 'auto' }}
-                          exit={{ height: 0 }}
-                          transition={{ duration: 0.3 }}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: 'easeOut' }}
                           className="overflow-hidden"
                         >
                           <div className="p-4 bg-container-high">
@@ -374,14 +455,14 @@ const SettingsPage = () => {
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         </TabsContent>
       </Tabs>
-    </div>
+    </motion.div>
   );
 }
 

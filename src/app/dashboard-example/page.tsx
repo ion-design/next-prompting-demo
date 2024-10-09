@@ -11,6 +11,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { LineChart } from "@tremor/react";
 import { type MouseEvent, useState } from "react";
+import { motion } from "framer-motion";
 
 import Button from "@/components/ion/Button";
 import Badge from "@/components/ion/Badge";
@@ -20,6 +21,19 @@ import SideNavigation from "@/components/ion/SideNavigation";
 import { Tab, Tabs, TabsList } from "@/components/ion/Tabs";
 import TokenMetric from "@/components/ion/TokenMetric";
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2, duration: 0.6, ease: "easeOut" },
+  },
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
 function DashboardExample() {
   const [inputValue, setInputValue] = useState("");
 
@@ -28,18 +42,31 @@ function DashboardExample() {
   }
 
   return (
-    <div className="bg-background w-screen h-screen flex">
+    <motion.div
+      className="bg-background w-screen h-screen flex"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
       <SideNavigation />
       <div className="bg-background flex-1 w-full flex flex-col gap-5 p-10">
-        <div className="w-full flex justify-between items-center">
+        <motion.div
+          className="w-full flex justify-between items-center"
+          variants={sectionVariants}
+        >
           <div className="flex items-center gap-5">
-            <div className="bg-on-neutral-container flex flex-col justify-center items-center p-2.5 rounded">
+            <motion.div
+              className="bg-on-neutral-container flex flex-col justify-center items-center p-2.5 rounded"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
               <img
                 src="/images/dashboard-example/Logo.svg"
                 alt="Logo"
                 className="h-4 w-4"
               />
-            </div>
+            </motion.div>
             <Tabs defaultValue="Overview">
               <TabsList>
                 <Tab value="Overview">Overview</Tab>
@@ -66,8 +93,11 @@ function DashboardExample() {
               Buy
             </Button>
           </div>
-        </div>
-        <div className="flex items-start gap-5">
+        </motion.div>
+        <motion.div
+          className="flex items-start gap-5"
+          variants={sectionVariants}
+        >
           <TokenMetric
             metric="$1.35b"
             badge={
@@ -96,10 +126,18 @@ function DashboardExample() {
             }
             title="TVL"
           />
-        </div>
-        <div className="w-full flex flex-col gap-2">
+        </motion.div>
+        <motion.div
+          className="w-full flex flex-col gap-2"
+          variants={sectionVariants}
+        >
           <div className="text-lg font-semibold text-foreground">Overview</div>
-          <div className="bg-background w-full flex flex-col items-center gap-5 p-5 rounded-radius-sm border border-stroke-strong shadow-[0_1px_8px_0_rgba(0,0,0,0.1)]">
+          <motion.div
+            className="bg-background w-full flex flex-col items-center gap-5 p-5 rounded-radius-sm border border-stroke-strong shadow-[0_1px_8px_0_rgba(0,0,0,0.1)]"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <div className="w-full flex justify-between items-center">
               <div className="flex flex-col justify-center">
                 <div className="text-sm text-subtle">TVL</div>
@@ -157,10 +195,10 @@ function DashboardExample() {
               categories={["Ether", "USDC"]}
               yAxisWidth={48}
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 export default DashboardExample;

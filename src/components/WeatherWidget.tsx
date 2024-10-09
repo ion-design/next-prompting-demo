@@ -1,4 +1,4 @@
-/* Build a weather widget that changes its appearance based on the current weather conditions, including animated rain, snow, or sunshine effects using CSS animations and SVG. */
+/* src/components/WeatherWidget.tsx */
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CloudSun, CloudRain, CloudSnow, Thermometer, Wind, Drop } from '@phosphor-icons/react';
@@ -40,31 +40,81 @@ const WeatherWidget = () => {
     }
   };
 
+  const temperatureColor = weather.temperature > 25
+    ? 'text-red-500'
+    : weather.temperature < 5
+    ? 'text-blue-500'
+    : 'text-primary';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
       className="bg-background w-80 p-6 rounded-radius-md shadow-medium overflow-hidden relative"
     >
-      <div className="flex justify-between items-center mb-4">
+      <motion.div
+        className="flex justify-between items-center mb-4"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      >
         <h2 className="text-2xl font-semibold text-foreground">Weather</h2>
-        {getWeatherIcon()}
-      </div>
-      <div className="mb-4">
-        <div className="text-4xl font-bold text-primary">{weather.temperature}°C</div>
-        <div className="text-secondary capitalize">{weather.condition}</div>
-      </div>
-      <div className="flex justify-between text-secondary">
-        <div className="flex items-center">
+        <motion.div
+          key={weather.condition}
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.8, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {getWeatherIcon()}
+        </motion.div>
+      </motion.div>
+      <motion.div
+        className="mb-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+      >
+        <motion.div
+          className={`text-4xl font-bold ${temperatureColor}`}
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          {weather.temperature}°C
+        </motion.div>
+        <motion.div
+          className="text-secondary capitalize"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          {weather.condition}
+        </motion.div>
+      </motion.div>
+      <motion.div
+        className="flex justify-between text-secondary"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.5 }}
+      >
+        <motion.div
+          className="flex items-center"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+        >
           <Drop size={20} className="mr-2" />
           <span>{weather.humidity}%</span>
-        </div>
-        <div className="flex items-center">
+        </motion.div>
+        <motion.div
+          className="flex items-center"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+        >
           <Wind size={20} className="mr-2" />
           <span>{weather.windSpeed} km/h</span>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
       <AnimatePresence>
         {weather.condition === 'rainy' && <RainAnimation />}
         {weather.condition === 'snowy' && <SnowAnimation />}
@@ -77,7 +127,7 @@ const WeatherWidget = () => {
 const RainAnimation = () => (
   <motion.div
     initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
+    animate={{ opacity: 0.7 }}
     exit={{ opacity: 0 }}
     className="absolute inset-0 pointer-events-none"
   >
@@ -87,15 +137,13 @@ const RainAnimation = () => (
         className="absolute top-0 w-0.5 h-8 bg-blue-400 rounded-full"
         style={{
           left: `${Math.random() * 100}%`,
-          animationDelay: `${Math.random() * 2}s`,
         }}
-        animate={{
-          y: ['0%', '100%'],
-          opacity: [0, 1, 0],
-        }}
+        initial={{ y: '-10%' }}
+        animate={{ y: '110%' }}
         transition={{
-          duration: 1 + Math.random(),
+          duration: 1.5 + Math.random(),
           repeat: Infinity,
+          delay: Math.random() * 2,
           ease: 'linear',
         }}
       />
@@ -106,26 +154,23 @@ const RainAnimation = () => (
 const SnowAnimation = () => (
   <motion.div
     initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
+    animate={{ opacity: 0.6 }}
     exit={{ opacity: 0 }}
     className="absolute inset-0 pointer-events-none"
   >
     {[...Array(30)].map((_, i) => (
       <motion.div
         key={i}
-        className="absolute top-0 w-2 h-2 bg-white rounded-full"
+        className="absolute w-2 h-2 bg-white rounded-full"
         style={{
           left: `${Math.random() * 100}%`,
-          animationDelay: `${Math.random() * 3}s`,
         }}
-        animate={{
-          y: ['0%', '100%'],
-          x: ['-10px', '10px', '-10px'],
-          opacity: [0, 1, 0],
-        }}
+        initial={{ y: '-10%', x: Math.random() * 20 - 10 }}
+        animate={{ y: '110%', x: Math.random() * 20 - 10 }}
         transition={{
           duration: 3 + Math.random() * 2,
           repeat: Infinity,
+          delay: Math.random() * 3,
           ease: 'linear',
         }}
       />
@@ -135,13 +180,10 @@ const SnowAnimation = () => (
 
 const SunAnimation = () => (
   <motion.div
-    initial={{ opacity: 0, scale: 0.5 }}
+    initial={{ opacity: 0, scale: 0.8 }}
     animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.5 }}
-    className="absolute top-4 right-4 w-16 h-16 bg-yellow-300 rounded-full"
-    style={{
-      boxShadow: '0 0 20px rgba(255, 204, 0, 0.6)',
-    }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    className="absolute top-4 right-4 w-16 h-16 bg-gradient-to-br from-yellow-300 to-yellow-400 rounded-full shadow-lg"
   >
     <motion.div
       className="absolute inset-0"
@@ -151,13 +193,15 @@ const SunAnimation = () => (
       {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-4 bg-yellow-400"
+          className="absolute w-1 h-4 bg-yellow-500 rounded"
           style={{
             top: '50%',
             left: '50%',
             transformOrigin: '0 32px',
-            transform: `rotate(${i * 45}deg)`,
+            rotate: `${i * 45}deg`,
           }}
+          animate={{ rotate: `${i * 45}deg` }}
+          transition={{ duration: 20, loop: Infinity, ease: 'linear' }}
         />
       ))}
     </motion.div>

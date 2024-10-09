@@ -1,4 +1,5 @@
 // ion/Sidebar: Generated with Ion on 8/5/2024, 8:46:42 PM
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 
 export interface SidebarProps {
@@ -13,13 +14,25 @@ export default function Sidebar({
   filled = false,
   className,
 }: SidebarProps) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    // Trigger the animation after the component mounts
+    setIsMounted(true);
+  }, []);
+
   return (
     <aside
       className={clsx(
         "sticky top-0 flex h-full w-fit shrink-0 flex-col justify-between",
         {
-          "bg-primary-pressed": filled,
-          "border-r border-stroke-disabled": !filled,
+          "bg-primary-pressed transition-colors duration-300 ease-in-out":
+            filled,
+          "border-r border-stroke-disabled transition-colors duration-300 ease-in-out":
+            !filled,
+          "transition-transform transition-opacity duration-500 ease-out",
+          "opacity-0 -translate-x-4": !isMounted,
+          "opacity-100 translate-x-0": isMounted,
         },
         className
       )}

@@ -1,4 +1,4 @@
-// ion/Input: Generated with Ion on 8/13/2024, 1:29:37 PM
+// ion/Input: Enhanced with animations on 4/27/2024
 import clsx from "clsx";
 import * as React from "react";
 import { twMerge } from "tailwind-merge";
@@ -27,16 +27,18 @@ export const inputContainerClasses = ({
         "px-3",
         "text-sm",
         "transition-shadow",
+        "transition-colors",
         "text-foreground",
         "overflow-hidden",
         "h-9",
         "hover:border-outline",
-        "transition-all",
         "bg-background",
+        "group",
       ],
-      "",
       "file:bg-transparent",
       {
+        "focus-within:shadow-lg focus-within:border-primary focus-within:transition-shadow focus-within:duration-300":
+          !error && !disabled,
         "focus-within:danger-focus border-danger hover:border-danger focus-within:border-danger-stroke":
           error,
         "focus-within:primary-focus focus-within:bg-background focus-within:border-stroke-primary focus-within:hover:border-stroke-primary border-stroke":
@@ -99,7 +101,10 @@ export interface InputProps
 export const inputClassNames = clsx(
   "h-full w-full flex-shrink bg-transparent focus:outline-none disabled:pointer-events-none",
   "placeholder:text-subtle disabled:text-on-disabled",
-  "disabled:placeholder:text-on-disabled"
+  "disabled:placeholder:text-on-disabled",
+  "transition-colors duration-300 ease-in-out",
+  "transition-transform",
+  "peer" // Added for potential future use
 );
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -125,7 +130,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const ariaInvalid = props["aria-invalid"] ?? !!error;
 
     return (
-      <div className={className}>
+      <div className={clsx(className, "transition-all duration-300 ease-in-out")}>
         {label && (
           <Label
             id={`${id}__label`}
@@ -145,9 +150,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         >
           {iconLeading && (
             <span
-              className={clsx("text-foreground", {
-                "text-on-disabled": props.disabled,
-              })}
+              className={clsx(
+                "text-foreground transition-transform duration-300 ease-in-out",
+                {
+                  "text-on-disabled": props.disabled,
+                  "group-focus:scale-105 group-focus:text-primary": !props.disabled,
+                }
+              )}
             >
               {iconLeading}
             </span>
@@ -158,15 +167,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             aria-required={required}
             aria-invalid={ariaInvalid}
             aria-describedby={hint ? `${id}__hint` : undefined}
-            className={inputClassNames}
+            className={twMerge(inputClassNames, "focus:shadow-none")}
             type={type}
             {...props}
           />
           {iconTrailing && (
             <span
-              className={clsx("text-foreground", {
-                "text-on-disabled": props.disabled,
-              })}
+              className={clsx(
+                "text-foreground transition-transform duration-300 ease-in-out",
+                {
+                  "text-on-disabled": props.disabled,
+                  "group-focus:scale-105 group-focus:text-primary": !props.disabled,
+                }
+              )}
             >
               {iconTrailing}
             </span>
@@ -176,7 +189,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <Hint
             id={`${id}__hint`}
             error={error}
-            className="mt-1"
+            className="mt-1 transition-opacity duration-300 ease-in-out"
             showIcon={showHintIcon}
             disabled={props.disabled}
           >

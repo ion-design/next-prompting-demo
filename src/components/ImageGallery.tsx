@@ -19,29 +19,67 @@ const images: Image[] = [
   { id: '6', src: 'https://assets.goaaa.com/image/upload/w_auto,q_auto:best,f_auto/v1647564225/singularity-migrated-images/sunset-jamieson-ranch-vineyards-scenic-napa-valley-secrets-via-magazine.jpg.jpg', title: 'Image 6', description: 'Description for Image 6' },
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const imageVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const overlayVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+const modalBackdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+const modalContentVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.95 },
+};
+
 const ImageGallery: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
+      <motion.div
+        className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {images.map((image) => (
           <motion.div
             key={image.id}
             className="relative mb-4 break-inside-avoid"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            variants={imageVariants}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            <img
+            <motion.img
               src={image.src}
               alt={image.title}
               className="w-full rounded-md"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
             />
             <motion.div
-              className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/60 to-transparent rounded-md opacity-0 hover:opacity-100 transition-opacity"
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 1 }}
+              className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/60 to-transparent rounded-md"
+              variants={overlayVariants}
+              initial="hidden"
+              whileHover="visible"
+              transition={{ duration: 0.3, ease: 'easeOut' }}
             >
               <h3 className="text-white text-lg font-semibold">{image.title}</h3>
               <p className="text-white text-sm">{image.description}</p>
@@ -54,22 +92,26 @@ const ImageGallery: React.FC = () => {
             </motion.div>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       <AnimatePresence>
         {selectedImage && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+            variants={modalBackdropVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            transition={{ duration: 0.3, ease: 'easeOut' }}
             onClick={() => setSelectedImage(null)}
           >
             <motion.div
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
               className="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-lg"
+              variants={modalContentVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ duration: 0.3, ease: 'easeOut' }}
               onClick={(e) => e.stopPropagation()}
             >
               <img
@@ -81,12 +123,14 @@ const ImageGallery: React.FC = () => {
                 <h3 className="text-white text-xl font-semibold">{selectedImage.title}</h3>
                 <p className="text-white text-sm mt-1">{selectedImage.description}</p>
               </div>
-              <button
+              <motion.button
                 onClick={() => setSelectedImage(null)}
                 className="absolute top-4 right-4 text-white hover:text-blue-400 transition-colors"
+                whileHover={{ rotate: 90 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
               >
                 <X size={24} />
-              </button>
+              </motion.button>
             </motion.div>
           </motion.div>
         )}

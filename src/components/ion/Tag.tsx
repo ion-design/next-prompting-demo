@@ -1,5 +1,5 @@
 "use client";
-// ion/Tag: Generated with Ion on 7/12/2024, 5:08:51 PM
+// ion/Tag: Enhanced with animations on 4/27/2024
 import { X } from "@phosphor-icons/react";
 import { cva } from "class-variance-authority";
 import clsx from "clsx";
@@ -25,7 +25,7 @@ export interface TagProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElem
 /* ---------------------------------- Component --------------------------------- */
 
 const tagClassNames = cva(
-  "cursor-default flex w-fit flex-row items-center justify-center gap-x-1 rounded-lg border px-2 py-1 text-xs font-semibold leading-none transition-all disabled:border-transparent disabled:bg-disabled",
+  "cursor-default flex w-fit flex-row items-center justify-center gap-x-1 rounded-lg border px-2 py-1 text-xs font-semibold leading-none transition-transform transition-opacity ease-in-out duration-200 transform hover:scale-105 active:scale-95 disabled:border-transparent disabled:bg-disabled",
   {
     variants: {
       color: {
@@ -84,36 +84,49 @@ const tagClassNames = cva(
   }
 );
 
-const Tag = React.forwardRef<HTMLButtonElement, TagProps>(({ className, variant = "stroke", color = "neutral", iconLeading, onDismiss, children, ...props }, ref) => {
-  return (
-    <button
-      ref={ref}
-      className={clsx(
-        tagClassNames({
-          variant,
-          color,
-        }),
-        className
-      )}
-      {...props}
-    >
-      {iconLeading}
-      {children}
-      {onDismiss && (
-        <X
-          onClick={(e) => {
-            // Don't fire the top-level onClick for the tag
-            e.stopPropagation();
-            onDismiss(e);
-          }}
-          role="button"
-          aria-label="Remove"
-          className="h-3 w-3"
-        />
-      )}
-    </button>
-  );
-});
+const Tag = React.forwardRef<HTMLButtonElement, TagProps>(
+  (
+    {
+      className,
+      variant = "stroke",
+      color = "neutral",
+      iconLeading,
+      onDismiss,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <button
+        ref={ref}
+        className={clsx(
+          tagClassNames({
+            variant,
+            color,
+          }),
+          className
+        )}
+        {...props}
+      >
+        {iconLeading}
+        {children}
+        {onDismiss && (
+          <X
+            onClick={(e) => {
+              // Prevent triggering the button's onClick
+              e.stopPropagation();
+              onDismiss(e);
+            }}
+            role="button"
+            aria-label="Remove"
+            className="h-3 w-3 transition-opacity ease-in-out duration-200 hover:opacity-80"
+          />
+        )}
+      </button>
+    );
+  }
+);
 Tag.displayName = "Tag";
 
 export default Tag;

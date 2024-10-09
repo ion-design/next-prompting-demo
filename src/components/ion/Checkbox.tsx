@@ -43,8 +43,7 @@ const Checkbox = React.forwardRef<
         ref={ref}
         className={twMerge(
           clsx(
-            'peer h-5 w-5 shrink-0 overflow-hidden rounded-radius-xs border border-stroke bg-background transition-colors hover:border-stroke-strong',
-            'focus-visible:primary-focus focus-visible:border-stroke-primary',
+            'peer relative h-5 w-5 shrink-0 overflow-hidden rounded-radius-xs border border-stroke bg-background transition-colors transition-transform duration-300 ease-in-out hover:border-stroke-strong focus-visible:primary-focus focus-visible:border-stroke-primary',
             'data-[state=checked]:text-on-primary data-[state=indeterminate]:text-on-primary data-[state=indeterminate]:bg-primary data-[state=checked]:bg-primary',
             'data-[state=checked]:border-transparent data-[state=indeterminate]:border-transparent',
             'disabled:pointer-events-none disabled:border-stroke-disabled disabled:bg-disabled disabled:text-on-disabled',
@@ -52,15 +51,35 @@ const Checkbox = React.forwardRef<
             'disabled:data-[state=checked]:text-on-disabled disabled:data-[state=indeterminate]:text-on-disabled',
             'group',
             !!error &&
-              'border-danger hover:border-danger data-[state=checked]:bg-danger data-[state=indeterminate]:bg-danger'
+              'border-danger hover:border-danger data-[state=checked]:bg-danger data-[state=indeterminate]:bg-danger',
+            'transform transition-transform duration-300 ease-in-out',
+            'hover:scale-105'
           )
         )}
         {...props}
       >
-        <CheckboxPrimitive.Indicator className={clsx('flex items-center justify-center')}>
-          <Check size={12} weight="bold" className={'z-10 hidden transition-none group-data-[state=checked]:block'} />
-          <Minus size={12} weight="bold" className={'hidden group-data-[state=indeterminate]:block'} />
+        <CheckboxPrimitive.Indicator
+          className={clsx(
+            'flex items-center justify-center',
+            'transition-opacity duration-300 ease-in-out',
+            'opacity-0 group-data-[state=checked]:opacity-100 group-data-[state=indeterminate]:opacity-100',
+            'transform scale-95 group-data-[state=checked]:scale-100 group-data-[state=indeterminate]:scale-100'
+          )}
+        >
+          <Check
+            size={12}
+            weight="bold"
+            className={'z-10 transition-transform duration-300 ease-in-out transform group-data-[state=checked]:scale-100 scale-95'}
+          />
+          <Minus
+            size={12}
+            weight="bold"
+            className={'transition-opacity duration-300 ease-in-out opacity-0 group-data-[state=indeterminate]:opacity-100'}
+          />
         </CheckboxPrimitive.Indicator>
+        <span className="absolute inset-0 transition-transform duration-300 ease-in-out transform scale-0 group-data-[state=checked]:scale-100 group-data-[state=indeterminate]:scale-100">
+          {/* Optional: Add background ripple or other effects here */}
+        </span>
       </CheckboxPrimitive.Root>
       {label && (
         <Label

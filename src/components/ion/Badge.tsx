@@ -4,7 +4,22 @@ import clsx from "clsx";
 import React from "react";
 
 const badgeClassNames = cva(
-  ["font-semibold", "rounded-full", "shrink-0", "whitespace-nowrap", "border"],
+  [
+    "font-semibold",
+    "rounded-full",
+    "shrink-0",
+    "whitespace-nowrap",
+    "border",
+    "transition",
+    "duration-300",
+    "ease-in-out",
+    "transform",
+    "hover:scale-105",
+    "hover:shadow-lg",
+    "focus:outline-none",
+    "focus:ring-2",
+    "focus:ring-offset-2",
+  ],
   {
     variants: {
       type: {
