@@ -95,3 +95,5 @@ const SubscribeToContinueCard = () => {
 };
 
 export default SubscribeToContinueCard;
+
+// Animated with AI!
