@@ -200,3 +200,5 @@ function Datepicker({
 }
 
 export default Datepicker;
+
+// Animated with AI!
