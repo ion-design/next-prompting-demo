@@ -1,3 +1,4 @@
+```tsx
 /* Design a responsive image gallery with a masonry layout. Include hover effects that show image details and a lightbox feature for full-screen viewing. */
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -24,37 +25,57 @@ const ImageGallery: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.1,
+            },
+          },
+        }}
+        className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4"
+      >
         {images.map((image) => (
           <motion.div
             key={image.id}
             className="relative mb-4 break-inside-avoid"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            <img
+            <motion.img
               src={image.src}
               alt={image.title}
               className="w-full rounded-md"
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
             />
             <motion.div
-              className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/60 to-transparent rounded-md opacity-0 hover:opacity-100 transition-opacity"
+              className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/60 to-transparent rounded-md"
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 1 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
               <h3 className="text-white text-lg font-semibold">{image.title}</h3>
               <p className="text-white text-sm">{image.description}</p>
-              <button
+              <motion.button
                 onClick={() => setSelectedImage(image)}
-                className="mt-2 text-white hover:text-blue-400 transition-colors"
+                className="mt-2 text-white"
+                whileTap={{ scale: 0.95 }}
+                whileHover={{ color: '#60A5FA' }}
+                transition={{ duration: 0.2 }}
               >
                 <MagnifyingGlass size={24} />
-              </button>
+              </motion.button>
             </motion.div>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       <AnimatePresence>
         {selectedImage && (
@@ -64,29 +85,47 @@ const ImageGallery: React.FC = () => {
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
             onClick={() => setSelectedImage(null)}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1 },
+            }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
             <motion.div
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
               className="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-lg"
               onClick={(e) => e.stopPropagation()}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
-              <img
+              <motion.img
                 src={selectedImage.src}
                 alt={selectedImage.title}
                 className="w-full h-full object-contain"
+                initial={{ scale: 1 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.95 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
               />
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+              >
                 <h3 className="text-white text-xl font-semibold">{selectedImage.title}</h3>
                 <p className="text-white text-sm mt-1">{selectedImage.description}</p>
-              </div>
-              <button
+              </motion.div>
+              <motion.button
                 onClick={() => setSelectedImage(null)}
-                className="absolute top-4 right-4 text-white hover:text-blue-400 transition-colors"
+                className="absolute top-4 right-4 text-white"
+                whileTap={{ scale: 0.9 }}
+                whileHover={{ color: '#60A5FA' }}
+                transition={{ duration: 0.2 }}
               >
                 <X size={24} />
-              </button>
+              </motion.button>
             </motion.div>
           </motion.div>
         )}
@@ -96,3 +135,4 @@ const ImageGallery: React.FC = () => {
 };
 
 export default ImageGallery;
+```

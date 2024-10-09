@@ -1,3 +1,4 @@
+```typescript
 /* A card that allows you to upload or drag & drop an image, and then crop the image to your desired size. maintain 1:1 aspect ratio. */
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -7,16 +8,16 @@ import Button from '@/components/ion/Button';
 import { CloudArrowUp, Crop, X } from '@phosphor-icons/react/dist/ssr';
 
 const ImageUploadAndCrop = () => {
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<string | null>(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
 
-  const onDrop = useCallback((acceptedFiles) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     const reader = new FileReader();
     reader.onload = () => {
-      setImage(reader.result);
+      setImage(reader.result as string);
     };
     reader.readAsDataURL(file);
   }, []);
@@ -27,7 +28,7 @@ const ImageUploadAndCrop = () => {
     multiple: false,
   });
 
-  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
@@ -50,31 +51,45 @@ const ImageUploadAndCrop = () => {
         {!image ? (
           <motion.div
             key="dropzone"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            <div
+            <motion.div
               {...getRootProps()}
               className={`border-2 border-dashed border-stroke p-8 rounded-radius-sm text-center cursor-pointer transition-colors ${
                 isDragActive ? 'border-primary bg-primary-accent' : 'hover:border-primary-hover'
               }`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               <input {...getInputProps()} />
-              <CloudArrowUp size={48} className="mx-auto mb-4 text-secondary" />
+              <CloudArrowUp
+                size={48}
+                className="mx-auto mb-4 text-secondary"
+                as={motion.svg}
+                initial={{ y: 0 }}
+                animate={isDragActive ? { y: -5 } : { y: 0 }}
+                transition={{ yoyo: Infinity, duration: 1 }}
+              />
               <p className="text-secondary">Drag & drop an image here, or click to select one</p>
-            </div>
+            </motion.div>
           </motion.div>
         ) : (
           <motion.div
             key="cropper"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            <div className="relative h-64 mb-4">
+            <motion.div
+              className="relative h-64 mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.1, duration: 0.3 }}
+            >
               <Cropper
                 image={image}
                 crop={crop}
@@ -84,9 +99,19 @@ const ImageUploadAndCrop = () => {
                 onZoomChange={setZoom}
                 onCropComplete={onCropComplete}
               />
-            </div>
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
+            </motion.div>
+            <motion.div
+              className="flex flex-col gap-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.3 }}
+            >
+              <motion.div
+                className="flex items-center justify-between"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.3 }}
+              >
                 <label htmlFor="zoom" className="text-secondary">
                   Zoom:
                 </label>
@@ -100,14 +125,22 @@ const ImageUploadAndCrop = () => {
                   onChange={(e) => setZoom(Number(e.target.value))}
                   className="w-2/3"
                 />
-              </div>
-              <div className="flex justify-between">
+              </motion.div>
+              <motion.div
+                className="flex justify-between"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.3 }}
+              >
                 <Button
                   variant="outline"
                   color="neutral"
                   size="md"
                   onClick={() => setImage(null)}
                   iconLeading={<X size={16} />}
+                  as={motion.button}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Cancel
                 </Button>
@@ -117,11 +150,14 @@ const ImageUploadAndCrop = () => {
                   size="md"
                   onClick={saveCroppedImage}
                   iconLeading={<Crop size={16} />}
+                  as={motion.button}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Save Cropped Image
                 </Button>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -130,3 +166,4 @@ const ImageUploadAndCrop = () => {
 };
 
 export default ImageUploadAndCrop;
+```

@@ -1,3 +1,4 @@
+```typescript
 import { cva } from 'class-variance-authority';
 import clsx from 'clsx';
 import * as React from 'react';
@@ -38,6 +39,14 @@ export const buttonVariants = cva(
     'h-fit',
     'w-fit',
     'disabled:text-on-disabled',
+    'transform',
+    'transition-transform',
+    'transition-shadow',
+    'transition-colors',
+    'duration-200',
+    'ease-in-out',
+    'hover:scale-105',
+    'active:scale-95',
   ],
   {
     variants: {
@@ -102,7 +111,7 @@ export const buttonVariants = cva(
               `text-${color}`,
               color === 'neutral' ? `border-stroke` : `border-stroke-${color}`,
               `hover:bg-${color}-accent`,
-              `active:bg-${color}-container  `,
+              `active:bg-${color}-container`,
               `active:text-on-${color}-container`,
               'bg-background',
             ],
@@ -159,7 +168,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                   ? `link-${size}`
                   : size,
             }),
-            'transition-shadows transition-colors',
             className
           )
         )}
@@ -176,3 +184,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 
 export default Button;
+```

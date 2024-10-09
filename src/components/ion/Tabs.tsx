@@ -1,3 +1,4 @@
+```tsx
 // ion/Tabs: Generated with Ion on 8/5/2024, 8:46:42 PM
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cva } from "class-variance-authority";
@@ -30,7 +31,7 @@ const TabsList = React.forwardRef<
     <TabsPrimitive.List
       ref={ref}
       className={clsx(
-        "relative flex w-fit items-start",
+        "relative flex w-fit items-start transition-all duration-300",
         {
           "gap-1 rounded-radius-sm bg-container p-1 border-stroke-disabled border-[0.5px]":
             type === "filled",
@@ -41,7 +42,7 @@ const TabsList = React.forwardRef<
     >
       {children}
       {type === "simple" && (
-        <div className={"absolute bottom-0 z-0 h-px w-full bg-stroke"} />
+        <div className="absolute bottom-0 z-0 h-px w-full bg-stroke transition-transform duration-300" />
       )}
     </TabsPrimitive.List>
   </TabTypeContext.Provider>
@@ -56,7 +57,10 @@ const TabsContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.Content
     ref={ref}
-    className={clsx("focus-visible:neutral-focus mt-2", className)}
+    className={clsx(
+      "focus-visible:neutral-focus mt-2 opacity-0 scale-95 transition-opacity transition-transform duration-300 data-[state=active]:opacity-100 data-[state=active]:scale-100",
+      className
+    )}
     {...props}
   />
 ));
@@ -74,12 +78,12 @@ export interface TabProps {
 /* ---------------------------------- Component --------------------------------- */
 
 const tabClassnames = cva(
-  "focus-visible:neutral-focus flex items-center justify-center whitespace-nowrap text-sm font-semibold text-subtle transition-all disabled:pointer-events-none",
+  "focus-visible:neutral-focus flex items-center justify-center whitespace-nowrap text-sm font-semibold text-subtle transition-colors duration-300 disabled:pointer-events-none",
   {
     variants: {
       type: {
         filled: [
-          "rounded-radius-xs text-subtle bg-container gap-2 py-1 pl-3.5 pr-4",
+          "rounded-radius-xs text-subtle bg-container gap-2 py-1 pl-3.5 pr-4 transition-shadow duration-300",
           "hover:text-secondary",
           "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-low",
           "disabled:text-on-disabled ",
@@ -87,7 +91,7 @@ const tabClassnames = cva(
         ],
         simple: [
           "border-b-2 border-transparent gap-1",
-          "transition-all data-[state=active]:z-[1]",
+          "transition-colors transition-transform duration-300 data-[state=active]:z-[1]",
           "hover:text-foreground",
           "disabled:text-on-disabled",
           "data-[state=active]:border-primary data-[state=active]:text-primary",
@@ -118,15 +122,24 @@ const Tab = React.forwardRef<
   return (
     <TabsPrimitive.Trigger
       ref={ref}
-      className={clsx(tabClassnames({ type, icon: !children }), className)}
+      className={clsx(tabClassnames({ type, icon: !!iconLeading || !!iconTrailing }), className)}
       {...props}
     >
-      {iconLeading}
+      {iconLeading && (
+        <span className="transition-transform duration-300 group-data-[state=active]:scale-100 group-hover:scale-105">
+          {iconLeading}
+        </span>
+      )}
       {children}
-      {iconTrailing}
+      {iconTrailing && (
+        <span className="transition-transform duration-300 group-data-[state=active]:scale-100 group-hover:scale-105">
+          {iconTrailing}
+        </span>
+      )}
     </TabsPrimitive.Trigger>
   );
 });
 Tab.displayName = TabsPrimitive.Trigger.displayName;
 
 export { Tab, Tabs, TabsContent, TabsList };
+```

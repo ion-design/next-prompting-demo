@@ -1,3 +1,4 @@
+```typescript
 /* Build a weather widget that changes its appearance based on the current weather conditions, including animated rain, snow, or sunshine effects using CSS animations and SVG. */
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -40,20 +41,57 @@ const WeatherWidget = () => {
     }
   };
 
+  const backgroundVariants = {
+    sunny: {
+      background: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)',
+    },
+    rainy: {
+      background: 'linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)',
+    },
+    snowy: {
+      background: 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)',
+    },
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={{ opacity: 1, y: 0, ...backgroundVariants[weather.condition] }}
+      whileHover={{ scale: 1.02, boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)' }}
       transition={{ duration: 0.5 }}
-      className="bg-background w-80 p-6 rounded-radius-md shadow-medium overflow-hidden relative"
+      className="w-80 p-6 rounded-radius-md shadow-medium overflow-hidden relative"
     >
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold text-foreground">Weather</h2>
-        {getWeatherIcon()}
+        <motion.div
+          key={weather.condition}
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.8, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {getWeatherIcon()}
+        </motion.div>
       </div>
       <div className="mb-4">
-        <div className="text-4xl font-bold text-primary">{weather.temperature}°C</div>
-        <div className="text-secondary capitalize">{weather.condition}</div>
+        <motion.div
+          key={weather.temperature}
+          className="text-4xl font-bold text-primary"
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          {weather.temperature}°C
+        </motion.div>
+        <motion.div
+          key={weather.condition}
+          className="text-secondary capitalize"
+          initial={{ y: 10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          {weather.condition}
+        </motion.div>
       </div>
       <div className="flex justify-between text-secondary">
         <div className="flex items-center">
@@ -77,7 +115,7 @@ const WeatherWidget = () => {
 const RainAnimation = () => (
   <motion.div
     initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
+    animate={{ opacity: 0.5 }}
     exit={{ opacity: 0 }}
     className="absolute inset-0 pointer-events-none"
   >
@@ -90,11 +128,11 @@ const RainAnimation = () => (
           animationDelay: `${Math.random() * 2}s`,
         }}
         animate={{
-          y: ['0%', '100%'],
+          y: ['-10%', '110%'],
           opacity: [0, 1, 0],
         }}
         transition={{
-          duration: 1 + Math.random(),
+          duration: 1.5 + Math.random(),
           repeat: Infinity,
           ease: 'linear',
         }}
@@ -106,7 +144,7 @@ const RainAnimation = () => (
 const SnowAnimation = () => (
   <motion.div
     initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
+    animate={{ opacity: 0.6 }}
     exit={{ opacity: 0 }}
     className="absolute inset-0 pointer-events-none"
   >
@@ -119,12 +157,12 @@ const SnowAnimation = () => (
           animationDelay: `${Math.random() * 3}s`,
         }}
         animate={{
-          y: ['0%', '100%'],
+          y: ['-10%', '110%'],
           x: ['-10px', '10px', '-10px'],
           opacity: [0, 1, 0],
         }}
         transition={{
-          duration: 3 + Math.random() * 2,
+          duration: 4 + Math.random() * 2,
           repeat: Infinity,
           ease: 'linear',
         }}
@@ -136,7 +174,7 @@ const SnowAnimation = () => (
 const SunAnimation = () => (
   <motion.div
     initial={{ opacity: 0, scale: 0.5 }}
-    animate={{ opacity: 1, scale: 1 }}
+    animate={{ opacity: 0.8, scale: 1 }}
     exit={{ opacity: 0, scale: 0.5 }}
     className="absolute top-4 right-4 w-16 h-16 bg-yellow-300 rounded-full"
     style={{
@@ -165,3 +203,4 @@ const SunAnimation = () => (
 );
 
 export default WeatherWidget;
+```

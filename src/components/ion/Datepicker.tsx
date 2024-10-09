@@ -1,8 +1,11 @@
+```typescript
+// src/components/ion/DatePicker.tsx
 // ion/DatePicker: Generated with Ion on 8/5/2024, 8:46:42 PM
 import clsx from "clsx";
 import React, { useEffect, useRef } from "react";
 import { type UseInputOptions, useInput } from "react-day-picker";
 import { twMerge } from "tailwind-merge";
+import { motion } from "framer-motion";
 
 import { Calendar } from "./Calendar";
 import Hint from "@/components/ion/Hint";
@@ -93,7 +96,12 @@ function Datepicker({
   }, [dayPickerProps.selected]);
 
   return (
-    <div className={className}>
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       {label && (
         <Label
           id={`${id}__label`}
@@ -195,8 +203,9 @@ function Datepicker({
           {hint}
         </Hint>
       )}
-    </div>
+    </motion.div>
   );
 }
 
 export default Datepicker;
+```

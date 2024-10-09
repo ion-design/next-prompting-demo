@@ -1,9 +1,18 @@
+```tsx
 import { Minus } from '@phosphor-icons/react';
 import { Plus } from '@phosphor-icons/react/dist/ssr';
 import clsx from 'clsx';
-import React, { type Dispatch, type SetStateAction, useCallback, useImperativeHandle, useRef, useState } from 'react';
+import React, {
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { type OnValueChange, NumericFormat } from 'react-number-format';
 import { twMerge } from 'tailwind-merge';
+import { motion } from 'framer-motion';
 
 import Hint from './Hint';
 import { inputClassNames, InputContainer } from './Input';
@@ -25,15 +34,16 @@ export interface NumberInputControlHandlers {
 
 /**
  * Check if the value is a valid number
- * @param value - The value to check
- *  */
+ * @param value - The value to check.
+ */
 function isValidNumber(value: number | string | undefined | null): value is number {
   return (
-    (typeof value === 'number' ? value < Number.MAX_SAFE_INTEGER : !Number.isNaN(Number(value))) && !Number.isNaN(value)
+    (typeof value === 'number' ? value < Number.MAX_SAFE_INTEGER : !Number.isNaN(Number(value))) &&
+    !Number.isNaN(value)
   );
 }
 /**
- * Get the number of decimal places in a number
+ * Get the number of decimal places in a number.
  */
 function getDecimalPlaces(inputValue: number | string) {
   const match = String(inputValue).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
@@ -85,13 +95,15 @@ function incrementOrDecrement({
   } else {
     if (action === 'increment') {
       if (max !== undefined) {
-        const incrementedValue = (Math.round(value * factor) + Math.round(incrementStep * factor)) / factor;
+        const incrementedValue =
+          (Math.round(value * factor) + Math.round(incrementStep * factor)) / factor;
         val = incrementedValue <= max ? incrementedValue : max;
       } else {
         val = (Math.round(value * factor) + Math.round(incrementStep * factor)) / factor;
       }
     } else {
-      const decrementedValue = (Math.round(value * factor) - Math.round(step * factor)) / factor;
+      const decrementedValue =
+        (Math.round(value * factor) - Math.round(step * factor)) / factor;
       val = min !== undefined && decrementedValue < min ? min : decrementedValue;
     }
   }
@@ -210,7 +222,9 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     const id = props.id ?? generatedId;
     const ariaInvalid = props['aria-invalid'] ?? !!error;
 
-    const [_value, _setValue] = useState<string | number | undefined>(value ?? defaultValue ?? undefined);
+    const [_value, _setValue] = useState<string | number | undefined>(
+      value ?? defaultValue ?? undefined
+    );
     const inputRef = useRef<HTMLInputElement>(null);
     useImperativeHandle(passedRef, () => inputRef.current as HTMLInputElement);
 
@@ -242,7 +256,10 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         onValueChange: onValueChange,
       });
 
-    useImperativeHandle(controlsRef, () => ({ increment: increment.current!, decrement: decrement.current! }));
+    useImperativeHandle(controlsRef, () => ({
+      increment: increment.current!,
+      decrement: decrement.current!,
+    }));
 
     const onIncrement = useCallback(() => {
       inputRef.current?.focus();
@@ -267,7 +284,12 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     };
 
     return (
-      <div className={className}>
+      <motion.div
+        className={className}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
         {label && (
           <Label
             id={`${id}__label`}
@@ -282,58 +304,76 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         )}
         <InputContainer className="pr-0" error={error} disabled={props.disabled}>
           {iconLeading && (
-            <span
+            <motion.span
               className={clsx('text-subtle', {
                 'text-on-disabled': props.disabled,
               })}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               {iconLeading}
-            </span>
+            </motion.span>
           )}
-          <NumericFormat
-            id={id}
-            aria-required={required}
-            aria-invalid={ariaInvalid}
-            aria-describedby={hint ? `${id}__hint` : undefined}
-            value={_value}
-            onValueChange={handleValueChange}
-            getInputRef={inputRef}
-            className={twMerge(clsx(inputClassNames, inputClassName))}
-            min={min}
-            max={max}
-            allowLeadingZeros={allowLeadingZeros}
-            onKeyDown={(e) => {
-              onKeyDown?.(e);
-              if (e.key === 'ArrowDown') {
-                onDecrement();
-              }
-              if (e.key === 'ArrowUp') {
-                onIncrement();
-              }
-            }}
-            onBlur={(e) => {
-              onBlur?.(e);
-              if (typeof _value === 'number') {
-                const clampedValue = clamp(_value, min, max);
-                if (clampedValue !== _value) {
-                  _setValue(clampedValue);
+          <motion.div
+            initial={{ scale: 1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="flex-grow"
+          >
+            <NumericFormat
+              id={id}
+              aria-required={required}
+              aria-invalid={ariaInvalid}
+              aria-describedby={hint ? `${id}__hint` : undefined}
+              value={_value}
+              onValueChange={handleValueChange}
+              getInputRef={inputRef}
+              className={twMerge(clsx(inputClassNames, inputClassName))}
+              min={min}
+              max={max}
+              allowLeadingZeros={allowLeadingZeros}
+              onKeyDown={(e) => {
+                onKeyDown?.(e);
+                if (e.key === 'ArrowDown') {
+                  onDecrement();
                 }
-              }
-            }}
-            {...props}
-          />
+                if (e.key === 'ArrowUp') {
+                  onIncrement();
+                }
+              }}
+              onBlur={(e) => {
+                onBlur?.(e);
+                if (typeof _value === 'number') {
+                  const clampedValue = clamp(_value, min, max);
+                  if (clampedValue !== _value) {
+                    _setValue(clampedValue);
+                  }
+                }
+              }}
+              {...props}
+            />
+          </motion.div>
           {iconTrailing && (
-            <span
+            <motion.span
               className={clsx('text-subtle', {
                 'text-on-disabled': props.disabled,
               })}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               {iconTrailing}
-            </span>
+            </motion.span>
           )}
           {showControls && (
-            <div className="flex gap-1 items-center px-2">
-              <button
+            <motion.div
+              className="flex gap-1 items-center px-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.3 }}
+            >
+              <motion.button
                 tabIndex={-1}
                 onClick={(e) => {
                   e.preventDefault();
@@ -344,13 +384,16 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                     e.preventDefault();
                   }
                 }}
-                className="h-5 w-5 outline-none flex items-center justify-center text-secondary hover:text-foreground transition-all bg-neutral-accent active:bg-neutral-container hover:bg-neutral-accent active:text-foreground rounded-full aria-disabled:pointer-events-none aria-disabled:text-on-disabled"
+                className="h-5 w-5 outline-none flex items-center justify-center text-secondary hover:text-foreground transition-colors bg-neutral-accent active:bg-neutral-container hover:bg-neutral-accent active:text-foreground rounded-full aria-disabled:pointer-events-none aria-disabled:text-on-disabled"
                 aria-label="Decrement"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               >
                 <Minus weight="bold" className="w-[10px] h-[10px]" />
-              </button>
+              </motion.button>
 
-              <button
+              <motion.button
                 tabIndex={-1}
                 onClick={(e) => {
                   e.preventDefault();
@@ -361,23 +404,33 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                     e.preventDefault();
                   }
                 }}
-                className="h-5 w-5 flex outline-none items-center justify-center text-secondary hover:text-foreground transition-all bg-neutral-accent active:bg-neutral-container hover:bg-neutral-accent active:text-foreground rounded-full aria-disabled:pointer-events-none aria-disabled:text-on-disabled"
+                className="h-5 w-5 flex outline-none items-center justify-center text-secondary hover:text-foreground transition-colors bg-neutral-accent active:bg-neutral-container hover:bg-neutral-accent active:text-foreground rounded-full aria-disabled:pointer-events-none aria-disabled:text-on-disabled"
                 aria-label="Increment"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               >
                 <Plus weight="bold" className="w-[10px] h-[10px]" />
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
           )}
         </InputContainer>
         {hint && (
-          <Hint id={`${id}__hint`} error={error} className="mt-1" showIcon={showHintIcon} disabled={props.disabled}>
+          <Hint
+            id={`${id}__hint`}
+            error={error}
+            className="mt-1"
+            showIcon={showHintIcon}
+            disabled={props.disabled}
+          >
             {hint}
           </Hint>
         )}
-      </div>
+      </motion.div>
     );
   }
 );
 NumberInput.displayName = 'NumberInput';
 
 export default NumberInput;
+```
