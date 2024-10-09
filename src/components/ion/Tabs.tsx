@@ -130,3 +130,5 @@ const Tab = React.forwardRef<
 Tab.displayName = TabsPrimitive.Trigger.displayName;
 
 export { Tab, Tabs, TabsContent, TabsList };
+
+// Animated with AI!
