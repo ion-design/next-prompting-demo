@@ -33,7 +33,7 @@ function SideNavigation() {
       <div className="bg-background flex-1 h-full w-[250px] px-4 flex flex-col justify-between">
         <NavigationMenu>
           <NavigationMenuList className="w-full flex flex-col gap-1 py-4">
-            <div className="text-base font-semibold text-secondary px-3 pt-4">
+            <div className="text-base font-semibold text-secondary px-3 pt-4 animate-fadeIn">
               Main
             </div>
             {[
@@ -60,7 +60,7 @@ function SideNavigation() {
             ].map(({ children, iconLeading, link }, index) => (
               <NavigationMenuItem key={index}>
                 <NavigationMenuLink
-                  className="w-full cursor-pointer"
+                  className="w-full cursor-pointer transition-colors duration-300 ease-in-out hover:bg-primary-accent focus:bg-primary-accent"
                   iconLeading={iconLeading}
                   iconTrailing={<CaretRight size={16} weight={"bold"} />}
                   href={link}
@@ -69,14 +69,14 @@ function SideNavigation() {
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
-            <div className="text-base font-semibold text-secondary px-3 pt-4">
+            <div className="text-base font-semibold text-secondary px-3 pt-4 animate-fadeIn">
               Main
             </div>
             <NavigationMenuItem>
               <NavigationMenuLink
                 iconTrailing={<CaretRight size={16} weight={"bold"} />}
                 iconLeading={<Gear size={14} weight={"fill"} />}
-                className="w-full cursor-pointer"
+                className="w-full cursor-pointer transition-colors duration-300 ease-in-out hover:bg-primary-accent focus:bg-primary-accent"
                 href="/settings"
               >
                 Settings
@@ -86,20 +86,20 @@ function SideNavigation() {
               <NavigationMenuLink
                 iconTrailing={<CaretRight size={16} weight={"bold"} />}
                 iconLeading={<User size={14} weight={"fill"} />}
-                className="w-full cursor-pointer"
+                className="w-full cursor-pointer transition-colors duration-300 ease-in-out hover:bg-primary-accent focus:bg-primary-accent"
               >
                 Profiles
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-        <div className="w-full flex flex-col gap-3 p-5">
+        <div className="w-full flex flex-col gap-3 p-5 animate-fadeIn">
           <Button
             variant="soft"
             color="neutral"
             size="sm"
             onClick={contactClickHandler}
-            className="w-full"
+            className="w-full transition-transform duration-300 ease-in-out hover:scale-105 focus:scale-105 active:scale-95"
           >
             Contact
           </Button>
@@ -107,7 +107,7 @@ function SideNavigation() {
             <img
               src="/images/dashboard-example/Line-1.svg"
               alt="Line 1"
-              className="flex-1 h-2.5 w-full"
+              className="flex-1 h-2.5 w-full transition-opacity duration-300 ease-in-out opacity-0 animate-fadeIn"
             />
           </div>
           <Avatar
@@ -115,6 +115,7 @@ function SideNavigation() {
             title="Samraaj"
             size="lg"
             src="/images/dashboard-example/samraaj.png"
+            className="transition-transform duration-300 ease-in-out hover:scale-105 focus:scale-105"
           />
         </div>
       </div>
