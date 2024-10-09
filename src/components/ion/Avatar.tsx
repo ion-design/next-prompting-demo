@@ -1,3 +1,4 @@
+```tsx
 // ion/Avatar: Generated with Ion on 8/5/2024, 8:46:42 PM
 import { Check, Plus, User, X } from "@phosphor-icons/react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
@@ -49,6 +50,7 @@ type AvatarStatusProps = {
 const avatarStatusClassNames = cva(
   [
     "absolute box-content flex flex-row items-center justify-center rounded-full",
+    "transition-colors duration-300",
   ],
   {
     variants: {
@@ -273,7 +275,7 @@ const Avatar = React.forwardRef<
           ref={ref}
           className={clsx(
             {
-              "relative flex shrink-0 flex-col items-center justify-center bg-disabled border border-background": true,
+              "relative flex shrink-0 flex-col items-center justify-center bg-disabled border border-background transition-transform duration-300 ease-in-out transform hover:scale-105": true,
               "h-[60px] w-[60px]": size === "lg",
               "h-12 w-12": size === "md",
               "h-8 w-8": size === "sm",
@@ -302,7 +304,7 @@ const Avatar = React.forwardRef<
           )}
           <AvatarPrimitive.Image
             className={clsx(
-              "aspect-square object-cover",
+              "aspect-square object-cover transition-transform duration-300 ease-in-out",
               {
                 "rounded-full": variant === "circle",
                 "rounded-radius-md": variant === "square",
@@ -338,3 +340,4 @@ const Avatar = React.forwardRef<
 Avatar.displayName = "Avatar";
 
 export default Avatar;
+```
