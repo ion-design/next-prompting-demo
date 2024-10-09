@@ -25,3 +25,5 @@ const Divider = React.forwardRef<
 Divider.displayName = SeparatorPrimitive.Root.displayName;
 
 export default Divider;
+
+// Animated with AI!
