@@ -1,3 +1,4 @@
+```tsx
 import * as SwitchPrimitives from '@radix-ui/react-switch';
 import clsx from 'clsx';
 import * as React from 'react';
@@ -27,7 +28,7 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, 
     const id = props.id || generatedId;
 
     return (
-      <span className="flex items-center gap-2 text-sm">
+      <span className="flex items-center gap-2 text-sm animate-fadeIn">
         <SwitchPrimitives.Root
           id={id}
           ref={ref}
@@ -35,7 +36,8 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, 
           aria-describedby={description ? `${id}__description` : undefined}
           className={clsx(
             'group',
-            'data-[state=checked]:focus-visible:primary-focus focus-visible:neutral-focus peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent shadow-sm transition-colors',
+            'data-[state=checked]:focus-visible:primary-focus focus-visible:neutral-focus peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent shadow-sm transition-colors transition-transform duration-300 ease-in-out transform-gpu',
+            'hover:scale-105',
             'disabled:pointer-events-none disabled:bg-disabled',
             {
               'data-[state=checked]:bg-primary data-[state=unchecked]:bg-on-disabled data-[state=unchecked]:hover:bg-soft':
@@ -52,7 +54,7 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, 
         >
           <SwitchPrimitives.Thumb
             className={clsx(
-              'pointer-events-none block rounded-full bg-white shadow-lg ring-0 transition-transform group-disabled:bg-on-disabled group-disabled:shadow-none data-[state=unchecked]:translate-x-0',
+              'pointer-events-none block rounded-full bg-white shadow-lg ring-0 transition-transform duration-300 ease-in-out transform-gpu group-disabled:bg-on-disabled group-disabled:shadow-none data-[state=unchecked]:translate-x-0',
               {
                 'h-3 w-3 data-[state=checked]:translate-x-4': size === 'sm',
                 'h-5 w-5 data-[state=checked]:translate-x-6': size === 'md',
@@ -69,6 +71,7 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, 
             description={description}
             descriptionId={description ? `${id}__description` : undefined}
             helper={helper}
+            className="transition-opacity duration-500 ease-in-out"
           >
             {label}
           </Label>
@@ -80,3 +83,4 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, 
 Switch.displayName = SwitchPrimitives.Root.displayName;
 
 export default Switch;
+```
