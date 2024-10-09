@@ -27,7 +27,7 @@ export interface LabelProps
 /* ---------------------------------- Component --------------------------------- */
 
 const labelVariants = cva(
-  "text-sm gap-1 font-medium text-secondary whitespace-nowrap peer-disabled:cursor-not-allowed peer-disabled:text-on-disabled"
+  "text-sm gap-1 font-medium text-secondary whitespace-nowrap peer-disabled:cursor-not-allowed peer-disabled:text-on-disabled transition-colors duration-300 ease-in-out"
 );
 
 const Label = React.forwardRef<
@@ -48,6 +48,12 @@ const Label = React.forwardRef<
     },
     ref
   ) => {
+    const [mounted, setMounted] = React.useState(false);
+
+    React.useEffect(() => {
+      setMounted(true);
+    }, []);
+
     return (
       <div
         className={clsx(
@@ -55,15 +61,18 @@ const Label = React.forwardRef<
           {
             "text-on-disabled": disabled,
           },
-          className
+          className,
+          "opacity-0 transition-opacity duration-500 ease-in-out",
+          mounted && "opacity-100"
         )}
       >
         <LabelPrimitive.Root
           ref={ref}
           className={clsx(
-            "flex flex-row items-center gap-x-0.5",
+            "flex flex-row items-center gap-x-0.5 transition-transform duration-300 ease-in-out",
             {
               "pointer-events-none text-on-disabled": disabled,
+              "hover:text-primary transform hover:scale-105": !disabled,
             },
             labelClassName
           )}
@@ -71,29 +80,44 @@ const Label = React.forwardRef<
         >
           {children}
           {required && (
-            <span className={disabled ? "text-on-disabled" : "text-primary"}>
+            <span
+              className={clsx(
+                disabled ? "text-on-disabled" : "text-primary",
+                "opacity-0 transition-opacity duration-500 ease-in-out",
+                mounted && "opacity-100"
+              )}
+            >
               *
             </span>
           )}
           {helper && (
             <span
-              className={clsx("text-sm font-normal text-subtle", {
-                "text-on-disabled": disabled,
-              })}
+              className={clsx(
+                "text-sm font-normal text-subtle transition-opacity duration-500 ease-in-out",
+                {
+                  "text-on-disabled": disabled,
+                  "opacity-0": !mounted,
+                  "opacity-100": mounted,
+                }
+              )}
             >
               ({helper})
             </span>
           )}
         </LabelPrimitive.Root>
-        <p
-          id={descriptionId}
-          className={clsx(
-            "text-sm font-normal",
-            disabled ? "text-on-disabled" : "text-secondary"
-          )}
-        >
-          {description}
-        </p>
+        {description && (
+          <p
+            id={descriptionId}
+            className={clsx(
+              "text-sm font-normal transition-opacity duration-500 ease-in-out",
+              disabled ? "text-on-disabled" : "text-secondary",
+              "opacity-0",
+              mounted && "opacity-100"
+            )}
+          >
+            {description}
+          </p>
+        )}
       </div>
     );
   }
