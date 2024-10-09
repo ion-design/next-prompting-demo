@@ -1,3 +1,4 @@
+```typescript
 "use client";
 // Generated with Ion on 8/6/2024, 4:58:10 PM
 // Figma Link: https://www.figma.com/design/BsgE00bYWTmwm4RY0WmYN6?node-id=2:12276
@@ -9,6 +10,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { useFormik } from "formik";
 import { type MouseEvent } from "react";
+import { motion } from "framer-motion";
 
 import Button from "@/components/ion/Button";
 import Input from "@/components/ion/Input";
@@ -29,32 +31,87 @@ function FormExample() {
 
   const { values, errors, touched, handleChange, handleBlur } = useFormik({
     initialValues: {
-          email: "",
+      email: "",
     },
     onSubmit: () => {},
   });
 
+  const containerVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+        when: "beforeChildren",
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
-    <div className="bg-container h-[800px] w-[1200px] flex justify-center items-center">
-      <div className="bg-background w-1/3 flex flex-col justify-center items-center gap-5 p-5 rounded-radius-sm shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
-        <div className="w-full flex flex-col justify-center items-center gap-2.5 p-2.5">
-          <div className="bg-on-neutral-container flex justify-center items-center p-4 rounded-full">
+    <motion.div
+      className="bg-container h-[800px] w-[1200px] flex justify-center items-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1, ease: "easeOut" }}
+    >
+      <motion.div
+        className="bg-background w-1/3 flex flex-col justify-center items-center gap-5 p-5 rounded-radius-sm shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div
+          className="w-full flex flex-col justify-center items-center gap-2.5 p-2.5"
+          variants={itemVariants}
+        >
+          <motion.div
+            className="bg-on-neutral-container flex justify-center items-center p-4 rounded-full"
+            variants={itemVariants}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
             <img
               src="/images/form-example/Logo.svg"
               alt="Logo"
               className="h-5 w-5"
             />
-          </div>
-          <div className="flex flex-col justify-center items-center">
-            <div className="text-2xl font-semibold text-foreground">
+          </motion.div>
+          <motion.div
+            className="flex flex-col justify-center items-center"
+            variants={itemVariants}
+          >
+            <motion.div
+              className="text-2xl font-semibold text-foreground"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
+            >
               Welcome back
-            </div>
-            <div className="text-base text-secondary">
+            </motion.div>
+            <motion.div
+              className="text-base text-secondary"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
+            >
               Sign in to your account
-            </div>
-          </div>
-        </div>
-        <form className="w-full flex flex-col justify-center items-center gap-4">
+            </motion.div>
+          </motion.div>
+        </motion.div>
+        <motion.form
+          className="w-full flex flex-col justify-center items-center gap-4"
+          variants={itemVariants}
+          onSubmit={e => { e.preventDefault(); }}
+        >
           <Input
             placeholder="hello@ion.design"
             iconLeading={<Envelope size={16} weight={"regular"} />}
@@ -69,8 +126,11 @@ function FormExample() {
           <Button variant="filled" color="primary" size="sm" className="w-full">
             Sign In
           </Button>
-        </form>
-        <div className="w-full flex items-center gap-3 text-xs font-semibold text-secondary">
+        </motion.form>
+        <motion.div
+          className="w-full flex items-center gap-3 text-xs font-semibold text-secondary"
+          variants={itemVariants}
+        >
           <img
             src="/images/form-example/Line-1.svg"
             alt="Line 1"
@@ -82,8 +142,11 @@ function FormExample() {
             alt="Line 2"
             className="flex-1 w-full"
           />
-        </div>
-        <div className="w-full flex flex-col justify-center items-center gap-4">
+        </motion.div>
+        <motion.div
+          className="w-full flex flex-col justify-center items-center gap-4"
+          variants={itemVariants}
+        >
           <Button
             iconLeading={<GoogleLogo size={16} weight={"bold"} />}
             variant="outline"
@@ -114,8 +177,11 @@ function FormExample() {
           >
             Continue with SSO
           </Button>
-        </div>
-        <div className="flex justify-center items-center gap-2">
+        </motion.div>
+        <motion.div
+          className="flex justify-center items-center gap-2"
+          variants={itemVariants}
+        >
           <div className="text-sm text-secondary">Don’t have an account?</div>
           <Button
             size="sm"
@@ -125,9 +191,10 @@ function FormExample() {
           >
             Sign up now
           </Button>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }
 export default FormExample;
+```
