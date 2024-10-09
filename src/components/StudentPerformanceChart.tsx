@@ -1,10 +1,47 @@
-
-// Create a bar chart that tracks student performance in a class. Use tremor for the bar chart.
-
+// src/components/StudentPerformanceChart.tsx
 
 import React from 'react';
 import { BarChart, Card, Title, Subtitle } from '@tremor/react';
 import { motion } from 'framer-motion';
+
+const containerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      when: "beforeChildren",
+      staggerChildren: 0.2,
+    },
+  },
+  hover: {
+    scale: 1.02,
+    boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+    },
+  },
+};
+
+const titleVariants = {
+  hidden: { opacity: 0, y: -10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
+const subtitleVariants = {
+  hidden: { opacity: 0, y: -10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.2 } },
+};
+
+const chartVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.6, delay: 0.4 },
+  },
+};
 
 const StudentPerformanceChart = () => {
   const chartdata = [
@@ -44,24 +81,33 @@ const StudentPerformanceChart = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      whileHover="hover"
       className="student-performance-chart"
     >
-      <Card className="bg-background shadow-medium rounded-radius-md">
-        <Title className="text-foreground">Student Performance</Title>
-        <Subtitle className="text-secondary">Scores in Math, Science, and English</Subtitle>
-        <BarChart
-          className="mt-6"
-          data={chartdata}
-          index="name"
-          categories={["Math Score", "Science Score", "English Score"]}
-          colors={["blue", "green", "red"]}
-          valueFormatter={dataFormatter}
-          yAxisWidth={48}
-        />
-      </Card>
+      <motion.div
+        variants={containerVariants}
+        className="bg-background shadow-medium rounded-radius-md"
+      >
+        <motion.div variants={titleVariants}>
+          <Title className="text-foreground">Student Performance</Title>
+        </motion.div>
+        <motion.div variants={subtitleVariants}>
+          <Subtitle className="text-secondary">Scores in Math, Science, and English</Subtitle>
+        </motion.div>
+        <motion.div variants={chartVariants} className="mt-6">
+          <BarChart
+            data={chartdata}
+            index="name"
+            categories={["Math Score", "Science Score", "English Score"]}
+            colors={["blue", "green", "red"]}
+            valueFormatter={dataFormatter}
+            yAxisWidth={48}
+          />
+        </motion.div>
+      </motion.div>
     </motion.div>
   );
 };
