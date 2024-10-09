@@ -1,3 +1,4 @@
+```tsx
 import { Check, Minus } from '@phosphor-icons/react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import clsx from 'clsx';
@@ -43,8 +44,7 @@ const Checkbox = React.forwardRef<
         ref={ref}
         className={twMerge(
           clsx(
-            'peer h-5 w-5 shrink-0 overflow-hidden rounded-radius-xs border border-stroke bg-background transition-colors hover:border-stroke-strong',
-            'focus-visible:primary-focus focus-visible:border-stroke-primary',
+            'peer h-5 w-5 shrink-0 overflow-hidden rounded-radius-xs border border-stroke bg-background transition-colors transition-transform duration-300 ease-in-out hover:border-stroke-strong focus-visible:primary-focus focus-visible:border-stroke-primary',
             'data-[state=checked]:text-on-primary data-[state=indeterminate]:text-on-primary data-[state=indeterminate]:bg-primary data-[state=checked]:bg-primary',
             'data-[state=checked]:border-transparent data-[state=indeterminate]:border-transparent',
             'disabled:pointer-events-none disabled:border-stroke-disabled disabled:bg-disabled disabled:text-on-disabled',
@@ -52,14 +52,16 @@ const Checkbox = React.forwardRef<
             'disabled:data-[state=checked]:text-on-disabled disabled:data-[state=indeterminate]:text-on-disabled',
             'group',
             !!error &&
-              'border-danger hover:border-danger data-[state=checked]:bg-danger data-[state=indeterminate]:bg-danger'
+              'border-danger hover:border-danger data-[state=checked]:bg-danger data-[state=indeterminate]:bg-danger',
+            'transform transition-transform duration-300 ease-in-out',
+            'group-data-[state=checked]:scale-110 group-data-[state=indeterminate]:scale-110'
           )
         )}
         {...props}
       >
-        <CheckboxPrimitive.Indicator className={clsx('flex items-center justify-center')}>
+        <CheckboxPrimitive.Indicator className={clsx('flex items-center justify-center transition-opacity duration-300 ease-in-out opacity-0 group-data-[state=checked]:opacity-100 group-data-[state=indeterminate]:opacity-100')}>
           <Check size={12} weight="bold" className={'z-10 hidden transition-none group-data-[state=checked]:block'} />
-          <Minus size={12} weight="bold" className={'hidden group-data-[state=indeterminate]:block'} />
+          <Minus size={12} weight="bold" className={'hidden transition-none group-data-[state=indeterminate]:block'} />
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>
       {label && (
@@ -81,3 +83,4 @@ const Checkbox = React.forwardRef<
 Checkbox.displayName = CheckboxPrimitive.Root.displayName;
 
 export default Checkbox;
+```
