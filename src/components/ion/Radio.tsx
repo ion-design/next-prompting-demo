@@ -1,7 +1,9 @@
+```tsx
 import { Circle } from '@phosphor-icons/react';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import clsx from 'clsx';
 import * as React from 'react';
+import { motion } from 'framer-motion';
 
 import Label from './Label';
 
@@ -9,7 +11,16 @@ const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
 >(({ className, ...props }, ref) => {
-  return <RadioGroupPrimitive.Root className={clsx('grid gap-2', className)} {...props} ref={ref} />;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className={clsx('grid gap-2', className)}
+    >
+      <RadioGroupPrimitive.Root {...props} ref={ref} />
+    </motion.div>
+  );
 });
 
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
@@ -35,7 +46,12 @@ const RadioGroupItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimit
     const id = props.id || generatedId;
     const ariaInvalid = props['aria-invalid'] || !!error;
     return (
-      <span className="flex items-center space-x-2">
+      <motion.span
+        className="flex items-center space-x-2"
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+      >
         <RadioGroupPrimitive.Item
           id={id}
           ref={ref}
@@ -45,22 +61,33 @@ const RadioGroupItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimit
           className={clsx(
             'bg-background focus-visible:primary-focus focus-visible:border-stroke-primary aspect-square h-4 w-4 rounded-full border border-outline text-subtle hover:border-stroke-strong aria-checked:border-primary aria-checked:bg-primary aria-checked:text-primary',
             'disabled:cursor-not-allowed disabled:border-none disabled:bg-disabled disabled:aria-checked:bg-disabled disabled:aria-checked:text-subtle',
-            'transition-shadows transition-colors',
+            'transition-shadows transition-colors transition-transform duration-300 ease-in-out',
             error ? 'border-danger aria-checked:border-danger aria-checked:bg-danger' : 'border-stroke',
+            'hover:scale-105 focus-visible:scale-105',
             className
           )}
+          whileTap={{ scale: 0.95 }}
           {...props}
         >
-          <RadioGroupPrimitive.Indicator className="relative flex items-center justify-center">
-            <Circle
-              weight="fill"
-              className={clsx(
-                'parent h-2.5 w-2.5 rounded-full border-none fill-white text-current disabled:fill-blue-500',
-                {
-                  'fill-soft': props.disabled,
-                }
-              )}
-            />
+          <RadioGroupPrimitive.Indicator
+            asChild
+            className="relative flex items-center justify-center"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: props['aria-checked'] ? 1 : 0 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+            >
+              <Circle
+                weight="fill"
+                className={clsx(
+                  'h-2.5 w-2.5 rounded-full border-none fill-white text-current disabled:fill-blue-500',
+                  {
+                    'fill-soft': props.disabled,
+                  }
+                )}
+              />
+            </motion.div>
           </RadioGroupPrimitive.Indicator>
         </RadioGroupPrimitive.Item>
         {label && (
@@ -76,10 +103,11 @@ const RadioGroupItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimit
             {label}
           </Label>
         )}
-      </span>
+      </motion.span>
     );
   }
 );
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 
 export { RadioGroup, RadioGroupItem };
+```
